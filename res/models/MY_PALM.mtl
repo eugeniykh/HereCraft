@@ -1,0 +1,4 @@
+newmtl lambert2SG
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+map_Kd palm1_uv_m2.bmp

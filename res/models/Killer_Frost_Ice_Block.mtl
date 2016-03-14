@@ -1,0 +1,8 @@
+# 
+# 
+newmtl KillerFrostIceBlock
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.100000 0.100000 0.100000
+map_Kd Killer_Frost_Ice_Block_D.tga
