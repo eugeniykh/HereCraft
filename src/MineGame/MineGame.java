@@ -39,6 +39,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.openal.AL;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.glu.GLU;
 import org.lwjgl.util.vector.Vector3f;
 import org.newdawn.slick.SlickException;
@@ -55,6 +56,7 @@ import MainLoop.World.OBJLoader.BufferTools;
 import MainLoop.World.OBJLoader.Model;
 import MainLoop.World.OBJLoader.ModelOBJ;
 import MainLoop.World.OBJLoader.OBJLoader;
+import Shader.ShaderProgram;
 import Window.Window;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -143,8 +145,17 @@ public class MineGame {
 		loadTextures(mainLoop);
 		loadModels(mainLoop);
 		setUpCameraPosition(mainLoop);
+		setUpShaders(mainLoop);
 		User.init(mainLoop);
 		setUpKeyClick(mainLoop);
+	}
+	
+	private static void setUpShaders(MainLoopGame mainLoop) {
+		mainLoop.shader = new ShaderProgram();
+		 
+		// do the heavy lifting of loading, compiling and linking
+		// the two shaders into a usable shader program
+		mainLoop.shader.init("res/shaders/simple.vertex", "res/shaders/simple.fragment");		
 	}
 
 	private static void loadTextures(MainLoopGame mainLoop) {
@@ -207,7 +218,7 @@ public class MineGame {
 
 			glFogi(GL_FOG_MODE, GL_EXP);
 			glFog(GL_FOG_COLOR, fogColor);
-			glFogf(GL_FOG_DENSITY, 0.0004f);
+			glFogf(GL_FOG_DENSITY, 0.0003f);
 			glHint(GL_FOG_HINT, GL_DONT_CARE);
 			glFogf(GL_FOG_START, 500.0f);
 			glFogf(GL_FOG_END, 5500.0f);

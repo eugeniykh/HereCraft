@@ -1,0 +1,17 @@
+/* Very simple vertex shader that applies the model view
+ * and projection matrix to the given vertex and overrides
+ * the color with a constant for all vertices. 
+ */
+#version 130
+ 
+varying vec3 lightDir,normal;
+	
+	void main()
+	{
+	
+		normal = normalize(gl_NormalMatrix * gl_Normal);
+		lightDir = normalize(vec3(gl_LightSource[0].position));
+		
+		gl_TexCoord[0] = gl_MultiTexCoord0;
+		gl_Position = ftransform();
+	} 

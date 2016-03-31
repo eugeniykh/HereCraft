@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 import java.util.Random;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.glu.Sphere;
 
 import MainLoop.FirstPersonCameraController;
@@ -81,9 +82,12 @@ public class World {
 	
 	public final int SEE_WORLD = 35;
 	
-	private final int NOT_SEE_WORLD = 45;
+	private final int NOT_SEE_WORLD = 35;
 	
 	public void drawStaff(MainLoopGame mainLoop) {
+		
+		GL20.glUseProgram( mainLoop.shader.getProgramId() );
+		
 		glPushMatrix();
 		
 		glTranslatef(-FirstPersonCameraController.position.x , -FirstPersonCameraController.position.y - 6,  -FirstPersonCameraController.position.z);
@@ -111,6 +115,8 @@ public class World {
 	
 	public void drawBullet(MainLoopGame mainLoop) {
 		
+		GL20.glUseProgram( mainLoop.shader.getProgramId() );
+		
 		for (Bullet bulletPoint : mainLoop.world.bullets) {
 			
 			if (bulletPoint.owner==0) {
@@ -123,7 +129,7 @@ public class World {
 			
 			glTranslatef(bulletPoint.x, bulletPoint.y,  bulletPoint.z);
 
-			float sizeBulletPoint = (bulletPoint.owner==0) ? 5.0f : 10.0f;
+			float sizeBulletPoint = (bulletPoint.owner==0) ? 10.0f : 15.0f;
 			
 			glScalef(sizeBulletPoint*bulletPoint.size, sizeBulletPoint*bulletPoint.size, sizeBulletPoint*bulletPoint.size);
 			
@@ -138,6 +144,9 @@ public class World {
 	}
 	
 	public void drawWorld(MainLoopGame mainLoop) {
+		
+		GL20.glUseProgram(0);
+		
 		for (Point3D point : brickArray) {
 			
 			if (!Utils.visiblePoint(point.Point3Dto2D(), mainLoop, 90)) {
@@ -195,7 +204,11 @@ public class World {
 			glPopMatrix();
 		}
 		
+		GL20.glUseProgram(0);
+		
 		drawPalms(mainLoop);
+		
+		GL20.glUseProgram( mainLoop.shader.getProgramId() );
 		
 		drawBushes(mainLoop);
 		
@@ -203,11 +216,17 @@ public class World {
 		
 		drawFlares(mainLoop);
 		
+		GL20.glUseProgram(0);
+		
 		drawDome(mainLoop);	
 		
 		// must be in back of all
 		
+		GL20.glUseProgram( mainLoop.shader.getProgramId() );
+		
 		drawMonsters(mainLoop);
+		
+		GL20.glUseProgram(0);
 	}
 	
 	public void drawMonsters(MainLoopGame mainLoop) {

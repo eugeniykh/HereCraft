@@ -23,6 +23,7 @@ import MainLoop.World.World;
 import MainLoop.World.Font.FontMineGame;
 import MainLoop.World.Shapes.SideBrick;
 import MineGame.MineGame;
+import Shader.ShaderProgram;
 import Time.fps.FPSHandler;
 import Utils.Utils;
 import Vector.Point3D;
@@ -56,6 +57,8 @@ public class MainLoopGame {
 	public float movementSpeed = 15.0f; // move 10 units per second
 	
 	public KeyEventsHandler keyEventsHandler;
+	
+	public ShaderProgram shader;
 
 	/**
 	 * Runs the game (the "main loop")
