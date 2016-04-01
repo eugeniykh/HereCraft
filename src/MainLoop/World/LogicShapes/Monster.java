@@ -20,7 +20,7 @@ public class Monster {
 	
 	public int hitValue = 0, hitValueMax = 20;
 	
-	public int fireTemp = 0, fireTempMax = 5;
+	public int fireTemp = 0, fireTempMax = 6;
 	
 	public int type = 0;
 	

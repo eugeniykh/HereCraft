@@ -123,7 +123,7 @@ public class MineGame {
 	private static void init(MainLoopGame mainLoop) throws Exception {
 
 		Window.setTitle(GAME_TITLE);
-		Window.setResolution(1024, 768, false);
+		Window.setResolution(800, 600, false);
 		Window.setVSync(false);
 		Window.setFPS(5000);
 		//Display.setFullscreen(true);
@@ -219,7 +219,7 @@ public class MineGame {
 
 			glFogi(GL_FOG_MODE, GL_EXP);
 			glFog(GL_FOG_COLOR, fogColor);
-			glFogf(GL_FOG_DENSITY, 0.0003f);
+			glFogf(GL_FOG_DENSITY, 0.0015f);
 			glHint(GL_FOG_HINT, GL_DONT_CARE);
 			glFogf(GL_FOG_START, 500.0f);
 			glFogf(GL_FOG_END, 5500.0f);

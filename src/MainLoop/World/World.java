@@ -83,7 +83,7 @@ public class World {
 	
 	public ArrayList<Palm> flares = new ArrayList<Palm>();
 	
-	public final int SEE_WORLD = 35;
+	public final int SEE_WORLD = 20;
 	
 	private final int NOT_SEE_WORLD = 35;
 	
@@ -211,11 +211,11 @@ public class World {
 		
 		drawPalms(mainLoop);
 		
-		GL20.glUseProgram( mainLoop.shader.getProgramId() );
-		
 		drawBushes(mainLoop);
 		
 		drawRocks(mainLoop);
+		
+		GL20.glUseProgram( mainLoop.shader.getProgramId() );
 		
 		drawFlares(mainLoop);
 		
@@ -224,8 +224,6 @@ public class World {
 		drawDome(mainLoop);	
 		
 		// must be in back of all
-		
-		GL20.glUseProgram( mainLoop.shader.getProgramId() );
 		
 		drawMonsters(mainLoop);
 		
@@ -587,7 +585,7 @@ public class World {
 	
 	private int generateNewPointSeed(Point point) {
 		double random = Math.random();
-		int result = ((random > 0.02f && random < 0.98f) ? 0 : ((random < 0.02f) ? 1 : -1));
+		int result = ((random > 0.1f && random < 0.9f) ? 0 : ((random < 0.1f) ? -1 : -1));
 		int resultMapOptional = (existingMap(point, 0)) ? 4 : result;
 		return (existingMap(point, 3)) ? -5 : resultMapOptional;
 	}

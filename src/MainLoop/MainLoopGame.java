@@ -132,7 +132,7 @@ public class MainLoopGame {
 		angle %= 360;
 	}
 	
-	private final int MONSTER_SEE_ME = 25;
+	private final int MONSTER_SEE_ME = 10;
 	
 	private void monstersController(MainLoopGame mainLoop) {
 		ArrayList<Monster> toRemoveMonster = new ArrayList<Monster>();
@@ -401,10 +401,10 @@ public class MainLoopGame {
         
         int monsterSize = world.monsters.size();
         
-        FontMineGame.drawString("Monsters: "+monsterSize, (float) (Window.getWidth() * 0.4f), 10);
-        FontMineGame.drawString("Monsters: "+monsterSize, (float) (Window.getWidth() * 0.4f), 10.2f);
-        FontMineGame.drawString("Monsters: "+monsterSize, (float) (Window.getWidth() * 0.4f + 0.5f), 10f);
-        FontMineGame.drawString("Monsters: "+monsterSize, (float) (Window.getWidth() * 0.4f + 0.5f), 10.2f);
+        FontMineGame.drawString("Monsters: "+monsterSize, (float) (Window.getWidth() * 0.37f), 10);
+        FontMineGame.drawString("Monsters: "+monsterSize, (float) (Window.getWidth() * 0.37f), 10.2f);
+        FontMineGame.drawString("Monsters: "+monsterSize, (float) (Window.getWidth() * 0.37f + 0.5f), 10f);
+        FontMineGame.drawString("Monsters: "+monsterSize, (float) (Window.getWidth() * 0.37f + 0.5f), 10.2f);
         
         String health = String.valueOf(Math.round(User.health));
         
@@ -445,7 +445,7 @@ public class MainLoopGame {
         
         String fps = String.valueOf(FPSHandler.getFPS());
         
-        FontMineGame.drawString("FPS: "+fps, Window.getWidth() * 0.9f, 35);
+        FontMineGame.drawString("FPS: "+fps, Window.getWidth() * 0.85f, 35);
         
         glPopMatrix();
         
