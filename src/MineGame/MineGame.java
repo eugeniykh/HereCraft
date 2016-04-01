@@ -190,6 +190,7 @@ public class MineGame {
 	}
 	
 	private static void openGL() {
+		
 		// Put the window into orthographic projection mode with 1:1 pixel
 		// ratio.
 		// We haven't used GLU here to do this to avoid an unnecessary

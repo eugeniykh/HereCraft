@@ -1,6 +1,8 @@
 package MainLoop.World;
 
 import java.awt.Point;
+import java.nio.ByteBuffer;
+import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -8,6 +10,7 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Random;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.glu.Sphere;
@@ -204,7 +207,7 @@ public class World {
 			glPopMatrix();
 		}
 		
-		GL20.glUseProgram(0);
+		GL20.glUseProgram( 0 );
 		
 		drawPalms(mainLoop);
 		
@@ -307,7 +310,52 @@ public class World {
 		}
 	}
 	
+	private FloatBuffer matSpecular;
+	private FloatBuffer lightPosition;
+	private FloatBuffer whiteLight; 
+	private FloatBuffer lModelAmbient;
+	
+	private void initLightArrays() {
+		matSpecular = BufferUtils.createFloatBuffer(4);
+		matSpecular.put(1.0f).put(1.0f).put(1.0f).put(1.0f).flip();
+		
+		lightPosition = BufferUtils.createFloatBuffer(4);
+		lightPosition.put(1.0f).put(1.0f).put(1.0f).put(0.0f).flip();
+		
+		whiteLight = BufferUtils.createFloatBuffer(4);
+		whiteLight.put(1.0f).put(1.0f).put(1.0f).put(1.0f).flip();
+		
+		lModelAmbient = BufferUtils.createFloatBuffer(4);
+		lModelAmbient.put(0.5f).put(0.5f).put(0.5f).put(1.0f).flip();
+	}
+	
+	private FloatBuffer floatBuffer(float a, float b, float c, float d) {
+		   float[] data = new float[] { a, b, c, d };
+		   FloatBuffer fb = BufferUtils.createFloatBuffer(data.length);
+		   fb.put(data);
+		   fb.flip();
+		   return fb;
+		}
+	
 	public void drawPalms(MainLoopGame mainLoop) {
+		
+		initLightArrays();
+		
+		glShadeModel(GL_SMOOTH);
+		glMaterial(GL_FRONT, GL_SPECULAR, matSpecular);				// sets specular material color
+		glMaterialf(GL_FRONT, GL_SHININESS, 50.0f);					// sets shininess
+		
+		glLight(GL_LIGHT0, GL_POSITION, lightPosition);				// sets light position
+		glLight(GL_LIGHT0, GL_SPECULAR, whiteLight);				// sets specular light to white
+		glLight(GL_LIGHT0, GL_DIFFUSE, whiteLight);					// sets diffuse light to white
+		glLightModel(GL_LIGHT_MODEL_AMBIENT, lModelAmbient);		// global ambient light 
+		
+		glEnable(GL_LIGHTING);										// enables lighting
+		glEnable(GL_LIGHT0);										// enables light0
+		
+		glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
+		
+		GL11.glLight(GL11.GL_LIGHT0, GL11.GL_POSITION, floatBuffer(-FirstPersonCameraController.position.x, -FirstPersonCameraController.position.y + 200f, -FirstPersonCameraController.position.z, 1f));
 		
 		palmTexture.bind();
 		
@@ -340,6 +388,9 @@ public class World {
 			glPopMatrix();
 		
 		}
+		
+		glDisable(GL_LIGHT0);
+		glDisable(GL_LIGHTING);
 	}
 	
 	public void drawBushes(MainLoopGame mainLoop) {	
