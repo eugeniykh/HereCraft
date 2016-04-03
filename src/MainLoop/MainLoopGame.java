@@ -306,7 +306,8 @@ public class MainLoopGame {
 				
 				if (mainLoop.world.brickArrayVectored.contains(currentPoint)) {
 					bullet.x -= addPositionX * bullet.directionX;
-					bullet.speed /= 5f;
+					//bullet.speed /= 5f;
+					bullet.directionX = -bullet.directionX;
 				}
 				
 				float addPositionY = (float)Math.cos(Math.toRadians(bullet.anglex)) * bullet.speed;
@@ -317,7 +318,8 @@ public class MainLoopGame {
 				
 				if (mainLoop.world.brickArrayVectored.contains(currentPoint)) {
 					bullet.z += addPositionY * bullet.directionY;
-					bullet.speed /= 5f;
+					//bullet.speed /= 5f;
+					bullet.directionY = -bullet.directionY;
 				}
 					
 				float addPositionZ = (float) Math.sin(Math.toRadians(bullet.angley)) * bullet.speed;
@@ -328,7 +330,8 @@ public class MainLoopGame {
 				
 				if (mainLoop.world.brickArrayVectored.contains(currentPoint)) {
 					bullet.y += addPositionZ * bullet.directionZ;
-					bullet.speed /= 5f;
+					//bullet.speed /= 5f;
+					bullet.directionZ = -bullet.directionZ;
 				}
 
 				for (Monster monster : mainLoop.world.monsters) {
