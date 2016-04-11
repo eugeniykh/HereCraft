@@ -14,7 +14,7 @@ public class Bullet {
 	
 	public float size = 1.0f;
 
-	public static final int speedMax = 70;
+	public static final int speedMax = 40;
 	
 	public float speed = speedMax;
 	

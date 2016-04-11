@@ -219,10 +219,10 @@ public class MineGame {
 
 			glFogi(GL_FOG_MODE, GL_EXP);
 			glFog(GL_FOG_COLOR, fogColor);
-			glFogf(GL_FOG_DENSITY, 0.001f);
+			glFogf(GL_FOG_DENSITY, 0.0003f);
 			glHint(GL_FOG_HINT, GL_DONT_CARE);
-			glFogf(GL_FOG_START, 500.0f);
-			glFogf(GL_FOG_END, 5500.0f);
+			glFogf(GL_FOG_START, 25000.0f);
+			glFogf(GL_FOG_END, 27000.0f);
 		}
 	}
 	

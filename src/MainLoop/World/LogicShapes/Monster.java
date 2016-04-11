@@ -12,7 +12,7 @@ public class Monster {
 	
 	public int texture = 0;
 	
-	public final int angleTempMax = 40;
+	public final int angleTempMax = 30;
 	
 	public float size = 1.0f;
 	
@@ -20,7 +20,7 @@ public class Monster {
 	
 	public int hitValue = 0, hitValueMax = 20;
 	
-	public int fireTemp = 0, fireTempMax = 6;
+	public int fireTemp = 0, fireTempMax = 1;
 	
 	public int type = 0;
 	

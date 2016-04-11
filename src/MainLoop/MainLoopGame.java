@@ -132,7 +132,7 @@ public class MainLoopGame {
 		angle %= 360;
 	}
 	
-	private final int MONSTER_SEE_ME = 10;
+	private final int MONSTER_SEE_ME = 15;
 	
 	private void monstersController(MainLoopGame mainLoop) {
 		ArrayList<Monster> toRemoveMonster = new ArrayList<Monster>();
@@ -148,11 +148,11 @@ public class MainLoopGame {
 				if (Utils.distance2Points(monster.Point3Dto2D(), FirstPersonCameraController.Point3Dto2D()) < MONSTER_SEE_ME) {
 					angle = -90+Utils.getAngle(new Point((int) -FirstPersonCameraController.position.x, (int) -FirstPersonCameraController.position.z), new Point((int) monster.x, (int) monster.z));
 				
-					monster.distanceTemp = (int) (4.0f * Math.random()) + 4;
+					monster.distanceTemp = (int) (5.0f * Math.random()) + 2;
 					
 				} else {
 					
-					monster.distanceTemp = (int) (4.0f * Math.random()) + 4;
+					monster.distanceTemp = (int) (3.0f * Math.random()) + 2;
 					
 				}
 				
@@ -164,10 +164,10 @@ public class MainLoopGame {
 					
 						if (monster.angle > monster.angleTemp) {
 							
-							if (monster.angleTemp - 10 < monster.angle) {
+							if (monster.angleTemp - 1 < monster.angle) {
 								monster.angle = monster.angleTemp;
 							} else {
-								monster.angle -= 10;
+								monster.angle -= 1;
 								
 								if (monster.angle < -360) {
 									monster.angle += 360;
@@ -176,10 +176,10 @@ public class MainLoopGame {
 							
 						} else if (monster.angle < monster.angleTemp) {
 							
-							if (monster.angleTemp + 10 > monster.angle) {
+							if (monster.angleTemp + 1 > monster.angle) {
 								monster.angle = monster.angleTemp;
 							} else {
-								monster.angle += 10;
+								monster.angle += 1;
 								
 								if (monster.angle > 360) {
 									monster.angle -= 360;
@@ -247,7 +247,7 @@ public class MainLoopGame {
 					float dZ = monsterY + (int) FirstPersonCameraController.position.z;
 					float dY = monster.y + (int) FirstPersonCameraController.position.y + 100;
 					float pitchBullet = (float) Math.toDegrees(Math.atan2(dY, Math.sqrt(dZ * dZ + dX * dX)) + Math.PI);
-					mainLoop.world.bullets.add(new Bullet(monsterX, monster.y+140, monsterY, -180 + angleBullet + (float) (((Math.random() > 0.5f) ? -1 : 1) * Math.random()) , -pitchBullet + (float) (((Math.random() > 0.5f) ? -1 : 1) * Math.random()), 1));
+					mainLoop.world.bullets.add(new Bullet(monsterX, monster.y+140, monsterY, -180 + angleBullet + (float) (((Math.random() > 0.5f) ? -1 : 1) * Math.random() * 5f) , -pitchBullet + (float) (((Math.random() > 0.5f) ? -1 : 1) * Math.random() * 5f), 1));
 				}
 				monster.fireTemp = 0;
 			} else {
@@ -265,7 +265,7 @@ public class MainLoopGame {
 			if (monster.health > 0 && Utils.getDistance((int) monster.x, (int) monster.y+200, (int) monster.z, (int) -FirstPersonCameraController.position.x, (int) -FirstPersonCameraController.position.y, (int) -FirstPersonCameraController.position.z) < 350) {
     			// check if health more than 0
 				if (User.alive()) {
-    				User.health -= 1.f;
+    				//User.health -= 1.f;
     				healthCaredMonster = true;
     			} else {
     				User.makeDead(this);
@@ -284,7 +284,7 @@ public class MainLoopGame {
 		}
 		
 		// hack for health temporarily
-		glColor3f(1, User.health/100f, User.health/100f);
+		glColor3f(1, 1, 1);
 		
 		if (!healthCaredMonster && User.alive()) {
 			User.healthRegeneration();
@@ -336,7 +336,7 @@ public class MainLoopGame {
 
 				for (Monster monster : mainLoop.world.monsters) {
 					
-					if (bullet.owner == 0 && Utils.getDistance((int) monster.x, (int) monster.y+200, (int) monster.z, (int) bullet.x, (int) bullet.y, (int) bullet.z) < Bullet.speedMax) {
+					if (bullet.owner == 0 && Utils.getDistance((int) monster.x, (int) monster.y+200, (int) monster.z, (int) bullet.x, (int) bullet.y, (int) bullet.z) < 70) {
 						if (monster.health > 0) {
 							monster.health -= 5.f;
 							float angle = -90+Utils.getAngle(new Point((int) -FirstPersonCameraController.position.x, (int) -FirstPersonCameraController.position.z), new Point((int) monster.x, (int) monster.z));
@@ -353,6 +353,8 @@ public class MainLoopGame {
 					if (bullet.owner == 1 && Utils.getDistance((int) -FirstPersonCameraController.position.x, (int) -FirstPersonCameraController.position.y, (int) -FirstPersonCameraController.position.z, (int) bullet.x, (int) bullet.y, (int) bullet.z) < Bullet.speedMax) {
 						if (User.alive()) {
 							User.health -= 0.5f;
+							mainLoop.camera.pitch+=(float) (((Math.random() > 0.5f) ? -1 : 1) * Math.random() * 0.5f);
+							mainLoop.camera.yaw+=(float) (((Math.random() > 0.5f) ? -1 : 1) * Math.random() * 0.5f);
 							toRemove.add(bullet);
 						} else {
 							User.makeDead(mainLoop);

@@ -132,7 +132,7 @@ public class World {
 			
 			glTranslatef(bulletPoint.x, bulletPoint.y,  bulletPoint.z);
 
-			float sizeBulletPoint = (bulletPoint.owner==0) ? 10.0f : 15.0f;
+			float sizeBulletPoint = (bulletPoint.owner==0) ? 10.0f : 12.0f;
 			
 			glScalef(sizeBulletPoint*bulletPoint.size, sizeBulletPoint*bulletPoint.size, sizeBulletPoint*bulletPoint.size);
 			
@@ -148,7 +148,7 @@ public class World {
 	
 	public void drawWorld(MainLoopGame mainLoop) {
 		
-		GL20.glUseProgram(0);
+		GL20.glUseProgram( 0 );
 		
 		for (Point3D point : brickArray) {
 			
@@ -207,9 +207,9 @@ public class World {
 			glPopMatrix();
 		}
 		
-		GL20.glUseProgram( 0 );
-		
 		drawPalms(mainLoop);
+		
+		GL20.glUseProgram( mainLoop.shader.getProgramId() );
 		
 		drawBushes(mainLoop);
 		
@@ -224,6 +224,8 @@ public class World {
 		drawDome(mainLoop);	
 		
 		// must be in back of all
+		
+		GL20.glUseProgram( mainLoop.shader.getProgramId() );
 		
 		drawMonsters(mainLoop);
 		
@@ -337,7 +339,7 @@ public class World {
 	
 	public void drawPalms(MainLoopGame mainLoop) {
 		
-		/*initLightArrays();
+		initLightArrays();
 		
 		glShadeModel(GL_SMOOTH);
 		glMaterial(GL_FRONT, GL_SPECULAR, matSpecular);				// sets specular material color
@@ -353,8 +355,8 @@ public class World {
 		
 		glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
 		
-		GL11.glLight(GL11.GL_LIGHT0, GL11.GL_POSITION, floatBuffer(-FirstPersonCameraController.position.x, -FirstPersonCameraController.position.y + 200f, -FirstPersonCameraController.position.z, 1f));
-		*/
+		GL11.glLight(GL11.GL_LIGHT0, GL11.GL_POSITION, floatBuffer(-FirstPersonCameraController.position.x, -FirstPersonCameraController.position.y+200f, -FirstPersonCameraController.position.z, 1f));
+		
 		palmTexture.bind();
 		
 		for (Palm palm : palms) {
@@ -387,8 +389,8 @@ public class World {
 		
 		}
 		
-		//glDisable(GL_LIGHT0);
-		//glDisable(GL_LIGHTING);
+		glDisable(GL_LIGHT0);
+		glDisable(GL_LIGHTING);
 	}
 	
 	public void drawBushes(MainLoopGame mainLoop) {	
@@ -550,7 +552,7 @@ public class World {
 			rocks.add(new Palm(palmX, palmZ, palmY));
 			generateRock = true;
 		}
-		if (!generatedBush && !generatedPalm && !generateRock && Math.random() < 0.003f) {
+		if (!generatedBush && !generatedPalm && !generateRock && Math.random() < 0.005f) {
 			float palmX = point.x * 100;
 			float palmY = point.z * 100;
 			float palmZ = Utils.getSmallerYByPoint(Utils.positionToPoint(palmX), Utils.positionToPoint(palmY), this) * 100;
