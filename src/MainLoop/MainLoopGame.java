@@ -352,7 +352,7 @@ public class MainLoopGame {
 					
 					if (bullet.owner == 1 && Utils.getDistance((int) -FirstPersonCameraController.position.x, (int) -FirstPersonCameraController.position.y, (int) -FirstPersonCameraController.position.z, (int) bullet.x, (int) bullet.y, (int) bullet.z) < Bullet.speedMax) {
 						if (User.alive()) {
-							User.health -= 0.5f;
+							User.health -= 0.3f;
 							mainLoop.camera.pitch+=(float) (((Math.random() > 0.5f) ? -1 : 1) * Math.random() * 0.5f);
 							mainLoop.camera.yaw+=(float) (((Math.random() > 0.5f) ? -1 : 1) * Math.random() * 0.5f);
 							toRemove.add(bullet);
