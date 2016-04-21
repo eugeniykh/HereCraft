@@ -34,10 +34,8 @@ public class User {
 	}
 	
 	public static void makeDead(MainLoopGame mainLoop) {
-		if (!alive()) {
-			health = 0;
-			dead = true;
-		}
+		health = 0;
+		dead = true;
 	}
 	
 	public static void removeAmmo() {

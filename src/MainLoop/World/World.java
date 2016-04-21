@@ -56,6 +56,7 @@ public class World {
 	public ModelOBJ bushModel = new ModelOBJ();
 	public ModelOBJ rockModel = new ModelOBJ();
 	public ModelOBJ flaresModel = new ModelOBJ();
+	public ModelOBJ bombModel = new ModelOBJ();
 	
 	public ModelOBJ goblin = new ModelOBJ();
 	
@@ -70,6 +71,7 @@ public class World {
 	public Texture rockTexture;
 	public Texture flaresTexture;
 	public Texture redIceTexture;
+	public Texture bombTexture;
 	
 	public ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 	
@@ -82,6 +84,8 @@ public class World {
 	public ArrayList<Palm> rocks = new ArrayList<Palm>();
 	
 	public ArrayList<Palm> flares = new ArrayList<Palm>();
+	
+	public ArrayList<Palm> bombs = new ArrayList<Palm>();
 	
 	public final int SEE_WORLD = 20;
 	
@@ -132,7 +136,7 @@ public class World {
 			
 			glTranslatef(bulletPoint.x, bulletPoint.y,  bulletPoint.z);
 
-			float sizeBulletPoint = (bulletPoint.owner==0) ? 10.0f : 12.0f;
+			float sizeBulletPoint = (bulletPoint.owner==0) ? 15.0f : 20.0f;
 			
 			glScalef(sizeBulletPoint*bulletPoint.size, sizeBulletPoint*bulletPoint.size, sizeBulletPoint*bulletPoint.size);
 			
@@ -215,9 +219,9 @@ public class World {
 		
 		drawRocks(mainLoop);
 		
-		GL20.glUseProgram( mainLoop.shader.getProgramId() );
-		
 		drawFlares(mainLoop);
+		
+		drawBombs(mainLoop);
 		
 		GL20.glUseProgram(0);
 		
@@ -339,7 +343,7 @@ public class World {
 	
 	public void drawPalms(MainLoopGame mainLoop) {
 		
-		initLightArrays();
+		/*initLightArrays();
 		
 		glShadeModel(GL_SMOOTH);
 		glMaterial(GL_FRONT, GL_SPECULAR, matSpecular);				// sets specular material color
@@ -356,7 +360,7 @@ public class World {
 		glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
 		
 		GL11.glLight(GL11.GL_LIGHT0, GL11.GL_POSITION, floatBuffer(-FirstPersonCameraController.position.x, -FirstPersonCameraController.position.y+200f, -FirstPersonCameraController.position.z, 1f));
-		
+		*/
 		palmTexture.bind();
 		
 		for (Palm palm : palms) {
@@ -389,8 +393,8 @@ public class World {
 		
 		}
 		
-		glDisable(GL_LIGHT0);
-		glDisable(GL_LIGHTING);
+		//glDisable(GL_LIGHT0);
+		//glDisable(GL_LIGHTING);
 	}
 	
 	public void drawBushes(MainLoopGame mainLoop) {	
@@ -498,6 +502,41 @@ public class World {
 		}
 	}
 	
+	public void drawBombs(MainLoopGame mainLoop) {
+		
+		bombTexture.bind();
+		
+		for (Palm bomb : bombs) {
+		
+			int cameraIsByYPositionAmendment = (Utils.positionToPoint(FirstPersonCameraController.position.y)<0) ? 0 : Utils.positionToPoint(FirstPersonCameraController.position.y);
+			
+			if (!Utils.visiblePoint(bomb.Point3Dto2D(), mainLoop, (int) (25-cameraIsByYPositionAmendment))) {
+				continue;
+			}
+			
+			if (!Utils.visiblePoint(bomb.Point3Dto2D(), mainLoop, (int) (90+90-25+cameraIsByYPositionAmendment))) {
+				continue;
+			}
+			
+			if (Utils.distance2Points(bomb.Point3Dto2D(), FirstPersonCameraController.Point3Dto2D()) > SEE_WORLD) {
+				continue;
+			}
+			
+			glPushMatrix();
+			
+			glTranslatef(bomb.x, bomb.y+100f, bomb.z);
+			
+			glRotatef(mainLoop.angle, 0, 1, 0);
+
+			glScalef(300.f, 300.f, 300.f);
+			
+			glCallList(bombModel.modelOBJ);
+			
+			glPopMatrix();
+		
+		}
+	}
+	
 	public void drawDome(MainLoopGame mainLoop) {
 		
 		glPushMatrix();
@@ -526,6 +565,7 @@ public class World {
 		boolean generatedBush = false;
 		boolean generateRock = false;
 		boolean generateFlare = false;
+		boolean generateBomb = false;
 		// generate Palm
 		if (Math.random() < 0.015f) {
 			float palmX = point.x * 100;
@@ -552,6 +592,7 @@ public class World {
 			rocks.add(new Palm(palmX, palmZ, palmY));
 			generateRock = true;
 		}
+		// generate Flare
 		if (!generatedBush && !generatedPalm && !generateRock && Math.random() < 0.005f) {
 			float palmX = point.x * 100;
 			float palmY = point.z * 100;
@@ -559,7 +600,14 @@ public class World {
 			flares.add(new Palm(palmX, palmZ, palmY));
 			generateFlare = true;
 		}
-		if (!generatedBush && !generatedPalm && !generateRock && !generateFlare && Math.random() < 0.003f) {
+		if (!generateFlare && !generatedBush && !generatedPalm && !generateRock && Math.random() < 0.02f) {
+			float palmX = point.x * 100;
+			float palmY = point.z * 100;
+			float palmZ = Utils.getSmallerYByPoint(Utils.positionToPoint(palmX), Utils.positionToPoint(palmY), this) * 100;
+			bombs.add(new Palm(palmX, palmZ, palmY));
+			generateBomb = true;
+		}
+		if (Math.random() < 0.003f) {
 			if (point.x > 25 || point.z > 25 || point.x < -25 || point.z < -25) {
 				float monsterX = point.x * 100;
 				float monsterY = point.z * 100;
@@ -757,7 +805,7 @@ public class World {
 	public void getAmmo(MainLoopGame mainLoop) {
 		ArrayList<Palm> toRemove = new ArrayList<Palm>();
 		for (Palm flare : flares) {
-			if (Utils.getDistance((int) flare.x, (int) flare.y + 200, (int) flare.z, (int) -FirstPersonCameraController.position.x, (int) -FirstPersonCameraController.position.y, (int) -FirstPersonCameraController.position.z) < 70) {
+			if (Utils.getDistance((int) flare.x, (int) flare.y + 200, (int) flare.z, (int) -FirstPersonCameraController.position.x, (int) -FirstPersonCameraController.position.y, (int) -FirstPersonCameraController.position.z) < 100) {
 				toRemove.add(flare);
 				User.addAmmo(30);
 				break;
@@ -765,6 +813,32 @@ public class World {
 		}
 		if (toRemove.size() > 0) {
 			flares.removeAll(toRemove);
+		}
+	}
+	
+	public void bombController(MainLoopGame mainLoop) {
+		ArrayList<Palm> toRemove = new ArrayList<Palm>();
+		for (Palm bomb : bombs) {
+			if (Utils.getDistance((int) bomb.x, (int) bomb.y + 200, (int) bomb.z, (int) -FirstPersonCameraController.position.x, (int) -FirstPersonCameraController.position.y, (int) -FirstPersonCameraController.position.z) < 250) {
+				toRemove.add(bomb);
+				if (User.health>50) {
+					User.health -= 50;
+				} else {
+					User.makeDead(mainLoop);
+				}
+				break;
+			}
+			for (Monster monster : monsters) {
+				if (Utils.getDistance((int) bomb.x, (int) bomb.y + 200, (int) bomb.z, (int) monster.x, (int) monster.y, (int) monster.z) < 250) {
+					toRemove.add(bomb);
+					monster.health -= 50;
+					monster.hitBlend = true;
+					break;
+				}
+			}
+		}
+		if (toRemove.size() > 0) {
+			bombs.removeAll(toRemove);
 		}
 	}
 }

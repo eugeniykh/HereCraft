@@ -124,6 +124,8 @@ public class MainLoopGame {
 		bulletController(this);
 		
 		monstersController(this);
+		
+		world.bombController(this);
 
    	 	world.needToGenerateNewWorld(this);
 		
@@ -147,14 +149,9 @@ public class MainLoopGame {
 				
 				if (Utils.distance2Points(monster.Point3Dto2D(), FirstPersonCameraController.Point3Dto2D()) < MONSTER_SEE_ME) {
 					angle = -90+Utils.getAngle(new Point((int) -FirstPersonCameraController.position.x, (int) -FirstPersonCameraController.position.z), new Point((int) monster.x, (int) monster.z));
-				
-					monster.distanceTemp = (int) (5.0f * Math.random()) + 2;
-					
-				} else {
-					
-					monster.distanceTemp = (int) (3.0f * Math.random()) + 2;
-					
 				}
+					
+				monster.distanceTemp = (int) (8.0f * Math.random()) + 2;
 				
 				monster.angleTemp = angle;
 				
@@ -306,7 +303,6 @@ public class MainLoopGame {
 				
 				if (mainLoop.world.brickArrayVectored.contains(currentPoint)) {
 					bullet.x -= addPositionX * bullet.directionX;
-					//bullet.speed /= 5f;
 					bullet.directionX = -bullet.directionX;
 				}
 				
@@ -318,7 +314,6 @@ public class MainLoopGame {
 				
 				if (mainLoop.world.brickArrayVectored.contains(currentPoint)) {
 					bullet.z += addPositionY * bullet.directionY;
-					//bullet.speed /= 5f;
 					bullet.directionY = -bullet.directionY;
 				}
 					
@@ -330,7 +325,6 @@ public class MainLoopGame {
 				
 				if (mainLoop.world.brickArrayVectored.contains(currentPoint)) {
 					bullet.y += addPositionZ * bullet.directionZ;
-					//bullet.speed /= 5f;
 					bullet.directionZ = -bullet.directionZ;
 				}
 
@@ -353,8 +347,6 @@ public class MainLoopGame {
 					if (bullet.owner == 1 && Utils.getDistance((int) -FirstPersonCameraController.position.x, (int) -FirstPersonCameraController.position.y, (int) -FirstPersonCameraController.position.z, (int) bullet.x, (int) bullet.y, (int) bullet.z) < Bullet.speedMax) {
 						if (User.alive()) {
 							User.health -= 0.3f;
-							mainLoop.camera.pitch+=(float) (((Math.random() > 0.5f) ? -1 : 1) * Math.random() * 0.5f);
-							mainLoop.camera.yaw+=(float) (((Math.random() > 0.5f) ? -1 : 1) * Math.random() * 0.5f);
 							toRemove.add(bullet);
 						} else {
 							User.makeDead(mainLoop);
@@ -397,51 +389,30 @@ public class MainLoopGame {
         GL11.glLoadIdentity();
         GL11.glOrtho(0, Window.getWidth(), Window.getHeight(), 0, 1, -1);
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
-        
-        glPushMatrix();
-        
+
         glColor3f(0, 0, 0);
         
-        glScalef(2, 2, 2);
-        
+        glPushMatrix();
+
         int monsterSize = world.monsters.size();
         
-        FontMineGame.drawString("Monsters: "+monsterSize, (float) (Window.getWidth() * 0.37f), 10);
-        FontMineGame.drawString("Monsters: "+monsterSize, (float) (Window.getWidth() * 0.37f), 10.2f);
-        FontMineGame.drawString("Monsters: "+monsterSize, (float) (Window.getWidth() * 0.37f + 0.5f), 10f);
-        FontMineGame.drawString("Monsters: "+monsterSize, (float) (Window.getWidth() * 0.37f + 0.5f), 10.2f);
-        
+        FontMineGame.drawString("Monsters: "+monsterSize, (float) (Window.getWidth() * 0.85f), 10);
+
         String health = String.valueOf(Math.round(User.health));
         
         FontMineGame.drawString("Health: "+health, 10, 10);
-        FontMineGame.drawString("Health: "+health, 10, 10.2f);
-        FontMineGame.drawString("Health: "+health, 10.5f, 10f);
-        FontMineGame.drawString("Health: "+health, 10.5f, 10.2f);
         
         String ammo = String.valueOf(User.ammo);
         
         FontMineGame.drawString("Ammo: "+ammo, 10, 20);
-        FontMineGame.drawString("Ammo: "+ammo, 10, 20.2f);
-        FontMineGame.drawString("Ammo: "+ammo, 10.5f, 20f);
-        FontMineGame.drawString("Ammo: "+ammo, 10.5f, 20.2f);
         
         if (!User.alive()) {
-        	FontMineGame.drawString("You lose", (float) (Window.getWidth() * 0.22f), (float) (Window.getHeight() * 0.11f));
-            FontMineGame.drawString("You lose", (float) (Window.getWidth() * 0.22f), (float) (Window.getHeight() * 0.11f + 0.2f));
-            FontMineGame.drawString("You lose", (float) (Window.getWidth() * 0.22f + 0.5f), (float) (Window.getHeight() * 0.11f));
-            FontMineGame.drawString("You lose", (float) (Window.getWidth() * 0.22f + 0.5f), (float) (Window.getHeight() * 0.11f + 0.2f));
-
-        	FontMineGame.drawString("Press R to restart", (float) (Window.getWidth() * 0.19f), (float) (Window.getHeight() * 0.12f));
-            FontMineGame.drawString("Press R to restart", (float) (Window.getWidth() * 0.19f), (float) (Window.getHeight() * 0.12f + 0.2f));
-            FontMineGame.drawString("Press R to restart", (float) (Window.getWidth() * 0.19f + 0.5f), (float) (Window.getHeight() * 0.12f));
-            FontMineGame.drawString("Press R to restart", (float) (Window.getWidth() * 0.19f + 0.5f), (float) (Window.getHeight() * 0.12f + 0.2f));
+        	FontMineGame.drawString("You lose", (float) (Window.getWidth() * 0.45f), (float) (Window.getHeight() * 0.25f));
+        	FontMineGame.drawString("Press R to restart", (float) (Window.getWidth() * 0.40f), (float) (Window.getHeight() * 0.27f));
         }
         
         if (world.monsters.size() == 0) {
-        	FontMineGame.drawString("You win", (float) (Window.getWidth() * 0.22f), (float) (Window.getHeight() * 0.12f));
-            FontMineGame.drawString("You win", (float) (Window.getWidth() * 0.22f), (float) (Window.getHeight() * 0.12f + 0.2f));
-            FontMineGame.drawString("You win", (float) (Window.getWidth() * 0.22f + 0.5f), (float) (Window.getHeight() * 0.12f));
-            FontMineGame.drawString("You win", (float) (Window.getWidth() * 0.22f + 0.5f), (float) (Window.getHeight() * 0.12f + 0.2f));
+        	FontMineGame.drawString("You win", (float) (Window.getWidth() * 0.45f), (float) (Window.getHeight() * 0.25f));
         }
         
         glPopMatrix();
@@ -450,7 +421,7 @@ public class MainLoopGame {
         
         String fps = String.valueOf(FPSHandler.getFPS());
         
-        FontMineGame.drawString("FPS: "+fps, Window.getWidth() * 0.85f, 35);
+        FontMineGame.drawString("FPS: "+fps, Window.getWidth() * 0.85f, 20);
         
         glPopMatrix();
         
