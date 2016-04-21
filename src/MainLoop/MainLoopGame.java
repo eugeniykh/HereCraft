@@ -244,7 +244,7 @@ public class MainLoopGame {
 					float dZ = monsterY + (int) FirstPersonCameraController.position.z;
 					float dY = monster.y + (int) FirstPersonCameraController.position.y + 100;
 					float pitchBullet = (float) Math.toDegrees(Math.atan2(dY, Math.sqrt(dZ * dZ + dX * dX)) + Math.PI);
-					mainLoop.world.bullets.add(new Bullet(monsterX, monster.y+140, monsterY, -180 + angleBullet + (float) (((Math.random() > 0.5f) ? -1 : 1) * Math.random() * 5f) , -pitchBullet + (float) (((Math.random() > 0.5f) ? -1 : 1) * Math.random() * 5f), 1));
+					mainLoop.world.bullets.add(new Bullet(monsterX, monster.y+140, monsterY, -180 + angleBullet + (float) (((Math.random() > 0.5f) ? -1 : 1) * Math.random() * 2f) , -pitchBullet + (float) (((Math.random() > 0.5f) ? -1 : 1) * Math.random() * 2f), 1));
 				}
 				monster.fireTemp = 0;
 			} else {
@@ -411,7 +411,7 @@ public class MainLoopGame {
         	FontMineGame.drawString("Press R to restart", (float) (Window.getWidth() * 0.40f), (float) (Window.getHeight() * 0.27f));
         }
         
-        if (world.monsters.size() == 0) {
+        if (User.alive() && world.monsters.size() == 0 && world.horizontalGenerateTemp.contains(new Point(0, world.NOT_SEE_WORLD))) {
         	FontMineGame.drawString("You win", (float) (Window.getWidth() * 0.45f), (float) (Window.getHeight() * 0.25f));
         }
         

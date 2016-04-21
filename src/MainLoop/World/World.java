@@ -89,7 +89,7 @@ public class World {
 	
 	public final int SEE_WORLD = 20;
 	
-	private final int NOT_SEE_WORLD = 45;
+	public final int NOT_SEE_WORLD = 45;
 	
 	public void drawStaff(MainLoopGame mainLoop) {
 		
@@ -553,11 +553,6 @@ public class World {
 	public void generateWorld() {
 		brickArray.add(new Point3D(0, -1, 0));
 		generateNewWorld(1);
-		
-		float monsterX = 25 * 100 * ((Math.random() > 0.5) ? 1 : -1);
-		float monsterY = 25 * 100 * ((Math.random() > 0.5) ? 1 : -1);
-		float monsterZ = Monster.getSmallerYByPoint(Utils.positionToPoint(monsterX), Utils.positionToPoint(monsterY), this) * 100;
-		monsters.add(new Monster(monsterX, monsterZ, monsterY));
 	}
 	
 	private void generateNewPalmForPoint(Point3DVectored point) {
