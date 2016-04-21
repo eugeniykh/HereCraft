@@ -1,4 +1,4 @@
 # HereCraft
 Simple Game on Java with LWJGL with code on Eclipse-project
 
-<img src="https://pp.vk.me/c604321/v604321135/e1/6d3ESik-2kc.jpg" />
+<img src="https://pp.vk.me/c633616/v633616135/2b725/L_UYWRT1LRA.jpg" />
