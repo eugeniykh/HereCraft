@@ -87,7 +87,7 @@ public class World {
 	
 	public ArrayList<Palm> bombs = new ArrayList<Palm>();
 	
-	public final int SEE_WORLD = 20;
+	public final int SEE_WORLD = 30;
 	
 	public final int NOT_SEE_WORLD = 45;
 	
@@ -213,9 +213,9 @@ public class World {
 		
 		drawPalms(mainLoop);
 		
-		GL20.glUseProgram( mainLoop.shader.getProgramId() );
-		
 		drawBushes(mainLoop);
+		
+		GL20.glUseProgram( mainLoop.shader.getProgramId() );
 		
 		drawRocks(mainLoop);
 		
