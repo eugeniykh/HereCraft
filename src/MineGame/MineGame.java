@@ -211,10 +211,10 @@ public class MineGame {
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
         
 		// Calculate The Aspect Ratio Of The Window
-		GLU.gluPerspective(45.0f, (float) Window.getWidth() / (float) Window.getHeight(), 0.1f, 50000.0f);
+		GLU.gluPerspective(60.0f, (float) Window.getWidth() / (float) Window.getHeight(), 0.2f, 50000.0f);
 		GL11.glMatrixMode(GL11.GL_MODELVIEW); // Select The Modelview Matrix
 		
-		/*glEnable(GL_FOG); {
+		glEnable(GL_FOG); {
 			FloatBuffer fogColor = BufferUtils.createFloatBuffer(4);
 			fogColor.put(0.5f).put(0.5f).put(1.0f).put(1.0f).flip();
 
@@ -224,7 +224,7 @@ public class MineGame {
 			glHint(GL_FOG_HINT, GL_DONT_CARE);
 			glFogf(GL_FOG_START, 25000.0f);
 			glFogf(GL_FOG_END, 27000.0f);
-		}*/
+		}
 	}
 	
 	private static void loadModel(MainLoopGame mainLoop, ModelOBJ modelOBJ, String src) {
