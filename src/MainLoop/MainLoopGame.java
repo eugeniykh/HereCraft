@@ -346,7 +346,7 @@ public class MainLoopGame {
 					
 					if (bullet.owner == 1 && Utils.getDistance((int) -FirstPersonCameraController.position.x, (int) -FirstPersonCameraController.position.y, (int) -FirstPersonCameraController.position.z, (int) bullet.x, (int) bullet.y, (int) bullet.z) < Bullet.speedMax) {
 						if (User.alive()) {
-							User.health -= 0.2f;
+							User.health -= 0.15f;
 							toRemove.add(bullet);
 						} else {
 							User.makeDead(mainLoop);

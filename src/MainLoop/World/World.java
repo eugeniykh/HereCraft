@@ -39,6 +39,7 @@ import Debug.Debug;
 public class World {
 	public Texture sideGrass;
 	public Texture grass;
+	public Texture grassFonNewTexture;
 	public Texture ground;
 	
 	public ArrayList<Point3D> brickArray = new ArrayList<Point3D>();;
@@ -178,7 +179,7 @@ public class World {
 			
 			glTranslatef(point.x * 100, point.y * 100,  point.z * 100);
 			
-			SideBrick.draw(this);
+			SideBrick.draw(this, point);
 			
 			glPopMatrix();
 		}
@@ -588,14 +589,15 @@ public class World {
 			generateRock = true;
 		}
 		// generate Flare
-		if (!generatedBush && !generatedPalm && !generateRock && Math.random() < 0.005f) {
+		if (!generatedBush && !generatedPalm && !generateRock && Math.random() < 0.007f) {
 			float palmX = point.x * 100;
 			float palmY = point.z * 100;
 			float palmZ = Utils.getSmallerYByPoint(Utils.positionToPoint(palmX), Utils.positionToPoint(palmY), this) * 100;
 			flares.add(new Palm(palmX, palmZ, palmY));
 			generateFlare = true;
 		}
-		if (!generateFlare && !generatedBush && !generatedPalm && !generateRock && Math.random() < 0.02f) {
+		// generate Bomb
+		if (!generateFlare && !generatedBush && !generatedPalm && !generateRock && Math.random() < 0.008f) {
 			float palmX = point.x * 100;
 			float palmY = point.z * 100;
 			float palmZ = Utils.getSmallerYByPoint(Utils.positionToPoint(palmX), Utils.positionToPoint(palmY), this) * 100;
@@ -800,7 +802,7 @@ public class World {
 	public void getAmmo(MainLoopGame mainLoop) {
 		ArrayList<Palm> toRemove = new ArrayList<Palm>();
 		for (Palm flare : flares) {
-			if (Utils.getDistance((int) flare.x, (int) flare.y + 200, (int) flare.z, (int) -FirstPersonCameraController.position.x, (int) -FirstPersonCameraController.position.y, (int) -FirstPersonCameraController.position.z) < 100) {
+			if (Utils.getDistance((int) flare.x, (int) flare.y + 200, (int) flare.z, (int) -FirstPersonCameraController.position.x, (int) -FirstPersonCameraController.position.y, (int) -FirstPersonCameraController.position.z) < 250) {
 				toRemove.add(flare);
 				User.addAmmo(30);
 				break;

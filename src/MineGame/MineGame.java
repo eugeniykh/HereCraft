@@ -161,6 +161,7 @@ public class MineGame {
 	private static void loadTextures(MainLoopGame mainLoop) {
 		mainLoop.world.grass = TextureCRUD.loadTexture("upper_grass.jpg", "JPG");
 		mainLoop.world.sideGrass = TextureCRUD.loadTexture("grass.jpg", "JPG");
+		mainLoop.world.grassFonNewTexture = TextureCRUD.loadTexture("upper_grass_fon_new.jpg", "JPG");
 		mainLoop.world.ground = TextureCRUD.loadTexture("ground.jpg", "JPG");
 		mainLoop.world.modelTexture = TextureCRUD.loadTexture("wraith.jpg", "JPG");
 		mainLoop.world.modelTexture_2 = TextureCRUD.loadTexture("wraith_d.jpg", "JPG");
