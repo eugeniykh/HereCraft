@@ -553,8 +553,13 @@ public class World {
 	
 	public void generateWorld() {
 		brickArray.add(new Point3D(0, -1, 0));
+		palmRandom = (float) Math.random() / 6.f;
+		bushRandom = (float) Math.random() / 4.f;
 		generateNewWorld(1);
 	}
+	
+	float palmRandom = 0;
+	float bushRandom = 0;
 	
 	private void generateNewPalmForPoint(Point3DVectored point) {
 		boolean generatedPalm = false;
@@ -563,7 +568,7 @@ public class World {
 		boolean generateFlare = false;
 		boolean generateBomb = false;
 		// generate Palm
-		if (Math.random() < 0.015f) {
+		if (Math.random() < palmRandom) {
 			float palmX = point.x * 100;
 			float palmY = point.z * 100;
 			float palmZ = Utils.getSmallerYByPoint(Utils.positionToPoint(palmX), Utils.positionToPoint(palmY), this);
@@ -573,7 +578,7 @@ public class World {
 			generatedPalm = true;
 		}
 		// generate Bush
-		if (!generatedPalm && Math.random() < 0.1f) {
+		if (!generatedPalm && Math.random() < bushRandom) {
 			float palmX = point.x * 100;
 			float palmY = point.z * 100;
 			float palmZ = Utils.getSmallerYByPoint(Utils.positionToPoint(palmX), Utils.positionToPoint(palmY), this) * 100;
