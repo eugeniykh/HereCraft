@@ -88,7 +88,7 @@ public class World {
 	
 	public ArrayList<Palm> bombs = new ArrayList<Palm>();
 	
-	public final int SEE_WORLD = 30;
+	public final int SEE_WORLD = 35;
 	
 	public final int NOT_SEE_WORLD = 45;
 	
