@@ -21,4 +21,16 @@ public class Point3D {
 	public Point3DVectored Point3DtoPoint3DVectored() {
 		return new Point3DVectored(x, y, z);
 	}
+	
+	@Override
+	public boolean equals(Object v) {
+		boolean retVal = false;
+
+		if (v instanceof Point3D) {
+			Point3D ptr = (Point3D) v;
+			retVal = ptr.x == this.x && ptr.y == this.y && ptr.z == this.z;
+		}
+
+		return retVal;
+	}
 }

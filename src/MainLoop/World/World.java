@@ -207,7 +207,7 @@ public class World {
 			
 			glTranslatef(point.x * 100, point.y * 100,  point.z * 100);
 			
-			GroundBrick.draw(this);
+			GroundBrick.draw(this, point);
 			
 			glPopMatrix();
 		}
@@ -774,6 +774,49 @@ public class World {
 			}
 			for (int i=point.y-1; i>smallerY; i--) {
 				Point3D newPoint = new Point3D(point.x , i , point.z);
+				for (Point3D pointClosest : point.closest) {
+					if (pointClosest.Point3Dto2D().equals(new Point(newPoint.x, newPoint.z + 1))) {
+						if (!newPoint.closest.contains(pointClosest)) {
+							newPoint.closest.add(pointClosest);
+						}
+					}
+					if (pointClosest.Point3Dto2D().equals(new Point(newPoint.x, newPoint.z - 1))) {
+						if (!newPoint.closest.contains(pointClosest)) {
+							newPoint.closest.add(pointClosest);
+						}
+					}
+					if (pointClosest.Point3Dto2D().equals(new Point(newPoint.x - 1, newPoint.z))) {
+						if (!newPoint.closest.contains(pointClosest)) {
+							newPoint.closest.add(pointClosest);
+						}
+					}
+					if (pointClosest.Point3Dto2D().equals(new Point(newPoint.x + 1, newPoint.z))) {
+						if (!newPoint.closest.contains(pointClosest)) {
+							newPoint.closest.add(pointClosest);
+						}
+					}
+					
+					if (pointClosest.Point3Dto2D().equals(new Point(newPoint.x + 1, newPoint.z + 1))) {
+						if (!newPoint.closest.contains(pointClosest)) {
+							newPoint.closest.add(pointClosest);
+						}
+					}
+					if (pointClosest.Point3Dto2D().equals(new Point(newPoint.x + 1, newPoint.z - 1))) {
+						if (!newPoint.closest.contains(pointClosest)) {
+							newPoint.closest.add(pointClosest);
+						}
+					}
+					if (pointClosest.Point3Dto2D().equals(new Point(newPoint.x - 1, newPoint.z + 1))) {
+						if (!newPoint.closest.contains(pointClosest)) {
+							newPoint.closest.add(pointClosest);
+						}
+					}
+					if (pointClosest.Point3Dto2D().equals(new Point(newPoint.x - 1, newPoint.z - 1))) {
+						if (!newPoint.closest.contains(pointClosest)) {
+							newPoint.closest.add(pointClosest);
+						}
+					}
+				}
 				if (!groundBrickArray.contains(newPoint)) {
 					brickArrayVectored.add(newPoint.Point3DtoPoint3DVectored());
 					groundBrickArray.add(newPoint);

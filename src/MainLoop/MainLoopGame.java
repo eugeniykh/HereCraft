@@ -343,14 +343,14 @@ public class MainLoopGame {
 						}
 						toRemove.add(bullet);
 					}
-					
-					if (bullet.owner == 1 && Utils.getDistance((int) -FirstPersonCameraController.position.x, (int) -FirstPersonCameraController.position.y, (int) -FirstPersonCameraController.position.z, (int) bullet.x, (int) bullet.y, (int) bullet.z) < Bullet.speedMax) {
-						if (User.alive()) {
-							User.health -= 0.1f;
-							toRemove.add(bullet);
-						} else {
-							User.makeDead(mainLoop);
-						}
+				}
+				
+				if (bullet.owner == 1 && Utils.getDistance((int) -FirstPersonCameraController.position.x, (int) -FirstPersonCameraController.position.y, (int) -FirstPersonCameraController.position.z, (int) bullet.x, (int) bullet.y, (int) bullet.z) < Bullet.speedMax) {
+					if (User.alive()) {
+						User.health -= 1.5f;
+						toRemove.add(bullet);
+					} else {
+						User.makeDead(mainLoop);
 					}
 				}
 				
