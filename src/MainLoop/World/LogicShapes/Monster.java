@@ -6,7 +6,7 @@ import MainLoop.World.World;
 import Utils.Utils;
 
 public class Monster {
-	public float x, y, z, angle, angleTemp = 0, distanceTemp = 5, angleTempNeeded, gravityAcceleration;
+	public float x, y, z, angle, angleTemp = 0, distanceTemp = 1, angleTempNeeded, gravityAcceleration;
 	
 	public float health = 100.0f;
 	

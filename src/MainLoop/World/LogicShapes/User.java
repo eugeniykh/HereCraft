@@ -15,6 +15,10 @@ public class User {
 	
 	public static int ammo = ammoMax;
 	
+	public static int crateFound = 0;
+	
+	public static int crateFoundMax;
+	
 	public static void init(MainLoopGame mainLoop) {
 		health = 100f;
 		ammo = ammoMax;

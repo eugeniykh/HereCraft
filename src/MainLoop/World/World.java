@@ -22,6 +22,7 @@ import MainLoop.World.LogicShapes.Monster;
 import MainLoop.World.LogicShapes.Palm;
 import MainLoop.World.LogicShapes.User;
 import MainLoop.World.OBJLoader.ModelOBJ;
+import MainLoop.World.Shapes.Crate;
 import MainLoop.World.Shapes.Dome;
 import MainLoop.World.Shapes.GroundBrick;
 import MainLoop.World.Shapes.SideBrick;
@@ -57,7 +58,6 @@ public class World {
 	public ModelOBJ bushModel = new ModelOBJ();
 	public ModelOBJ rockModel = new ModelOBJ();
 	public ModelOBJ flaresModel = new ModelOBJ();
-	public ModelOBJ bombModel = new ModelOBJ();
 	
 	public ModelOBJ goblin = new ModelOBJ();
 	
@@ -72,7 +72,7 @@ public class World {
 	public Texture rockTexture;
 	public Texture flaresTexture;
 	public Texture redIceTexture;
-	public Texture bombTexture;
+	public Texture crateTexture;
 	
 	public ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 	
@@ -86,7 +86,7 @@ public class World {
 	
 	public ArrayList<Palm> flares = new ArrayList<Palm>();
 	
-	public ArrayList<Palm> bombs = new ArrayList<Palm>();
+	public ArrayList<Palm> points = new ArrayList<Palm>();
 	
 	public final int SEE_WORLD = 35;
 	
@@ -139,7 +139,7 @@ public class World {
 
 			float sizeBulletPoint = (bulletPoint.owner==0) ? 15.0f : 20.0f;
 			
-			glScalef(sizeBulletPoint*bulletPoint.size, sizeBulletPoint*bulletPoint.size, sizeBulletPoint*bulletPoint.size);
+			glScalef(sizeBulletPoint, sizeBulletPoint, sizeBulletPoint);
 			
 			if (bulletPoint.speed > 1.0f) {
 				glRotatef(mainLoop.angle, 0, 1, 0);			
@@ -163,11 +163,11 @@ public class World {
 			
 			int cameraIsByYPositionAmendment = (Utils.positionToPoint(FirstPersonCameraController.position.y)<0) ? 0 : Utils.positionToPoint(FirstPersonCameraController.position.y);
 			
-			if (!Utils.visiblePoint(point.Point3Dto2D(), mainLoop, (int) (30-cameraIsByYPositionAmendment))) {
+			if (!Utils.visiblePoint(point.Point3Dto2D(), mainLoop, (int) (35-cameraIsByYPositionAmendment))) {
 				continue;
 			}
 			
-			if (!Utils.visiblePoint(point.Point3Dto2D(), mainLoop, (int) (90+90-30+cameraIsByYPositionAmendment))) {
+			if (!Utils.visiblePoint(point.Point3Dto2D(), mainLoop, (int) (90+90-35+cameraIsByYPositionAmendment))) {
 				continue;
 			}
 			
@@ -191,11 +191,11 @@ public class World {
 			
 			int cameraIsByYPositionAmendment = (Utils.positionToPoint(FirstPersonCameraController.position.y)<0) ? 0 : Utils.positionToPoint(FirstPersonCameraController.position.y);
 						
-			if (!Utils.visiblePoint(point.Point3Dto2D(), mainLoop, (int) (30-cameraIsByYPositionAmendment))) {
+			if (!Utils.visiblePoint(point.Point3Dto2D(), mainLoop, (int) (35-cameraIsByYPositionAmendment))) {
 				continue;
 			}
 			
-			if (!Utils.visiblePoint(point.Point3Dto2D(), mainLoop, (int) (90+90-30+cameraIsByYPositionAmendment))) {
+			if (!Utils.visiblePoint(point.Point3Dto2D(), mainLoop, (int) (90+90-35+cameraIsByYPositionAmendment))) {
 				continue;
 			}
 			
@@ -222,7 +222,7 @@ public class World {
 		
 		drawFlares(mainLoop);
 		
-		drawBombs(mainLoop);
+		drawPoints(mainLoop);
 		
 		GL20.glUseProgram(0);
 		
@@ -243,11 +243,11 @@ public class World {
 		
 			int cameraIsByYPositionAmendment = (Utils.positionToPoint(FirstPersonCameraController.position.y)<0) ? 0 : Utils.positionToPoint(FirstPersonCameraController.position.y);
 			
-			if (!Utils.visiblePoint(monster.Point3Dto2D(), mainLoop, (int) (25-cameraIsByYPositionAmendment))) {
+			if (!Utils.visiblePoint(monster.Point3Dto2D(), mainLoop, (int) (35-cameraIsByYPositionAmendment))) {
 				continue;
 			}
 			
-			if (!Utils.visiblePoint(monster.Point3Dto2D(), mainLoop, (int) (90+90-25+cameraIsByYPositionAmendment))) {
+			if (!Utils.visiblePoint(monster.Point3Dto2D(), mainLoop, (int) (90+90-35+cameraIsByYPositionAmendment))) {
 				continue;
 			}
 			
@@ -315,64 +315,18 @@ public class World {
 		}
 	}
 	
-	private FloatBuffer matSpecular;
-	private FloatBuffer lightPosition;
-	private FloatBuffer whiteLight; 
-	private FloatBuffer lModelAmbient;
-	
-	private void initLightArrays() {
-		matSpecular = BufferUtils.createFloatBuffer(4);
-		matSpecular.put(1.0f).put(1.0f).put(1.0f).put(1.0f).flip();
-		
-		lightPosition = BufferUtils.createFloatBuffer(4);
-		lightPosition.put(1.0f).put(1.0f).put(1.0f).put(0.0f).flip();
-		
-		whiteLight = BufferUtils.createFloatBuffer(4);
-		whiteLight.put(1.0f).put(1.0f).put(1.0f).put(1.0f).flip();
-		
-		lModelAmbient = BufferUtils.createFloatBuffer(4);
-		lModelAmbient.put(0.5f).put(0.5f).put(0.5f).put(1.0f).flip();
-	}
-	
-	private FloatBuffer floatBuffer(float a, float b, float c, float d) {
-		   float[] data = new float[] { a, b, c, d };
-		   FloatBuffer fb = BufferUtils.createFloatBuffer(data.length);
-		   fb.put(data);
-		   fb.flip();
-		   return fb;
-		}
-	
 	public void drawPalms(MainLoopGame mainLoop) {
-		
-		/*initLightArrays();
-		
-		glShadeModel(GL_SMOOTH);
-		glMaterial(GL_FRONT, GL_SPECULAR, matSpecular);				// sets specular material color
-		glMaterialf(GL_FRONT, GL_SHININESS, 50.0f);					// sets shininess
-		
-		glLight(GL_LIGHT0, GL_POSITION, lightPosition);				// sets light position
-		glLight(GL_LIGHT0, GL_SPECULAR, whiteLight);				// sets specular light to white
-		glLight(GL_LIGHT0, GL_DIFFUSE, whiteLight);					// sets diffuse light to white
-		glLightModel(GL_LIGHT_MODEL_AMBIENT, lModelAmbient);		// global ambient light 
-		
-		glEnable(GL_LIGHTING);										// enables lighting
-		glEnable(GL_LIGHT0);										// enables light0
-		
-		glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
-		
-		GL11.glLight(GL11.GL_LIGHT0, GL11.GL_POSITION, floatBuffer(-FirstPersonCameraController.position.x, -FirstPersonCameraController.position.y+200f, -FirstPersonCameraController.position.z, 1f));
-		*/
 		palmTexture.bind();
 		
 		for (Palm palm : palms) {
 		
 			int cameraIsByYPositionAmendment = (Utils.positionToPoint(FirstPersonCameraController.position.y)<0) ? 0 : Utils.positionToPoint(FirstPersonCameraController.position.y);
 			
-			if (!Utils.visiblePoint(palm.Point3Dto2D(), mainLoop, (int) (25-cameraIsByYPositionAmendment))) {
+			if (!Utils.visiblePoint(palm.Point3Dto2D(), mainLoop, (int) (35-cameraIsByYPositionAmendment))) {
 				continue;
 			}
 			
-			if (!Utils.visiblePoint(palm.Point3Dto2D(), mainLoop, (int) (90+90-25+cameraIsByYPositionAmendment))) {
+			if (!Utils.visiblePoint(palm.Point3Dto2D(), mainLoop, (int) (90+90-35+cameraIsByYPositionAmendment))) {
 				continue;
 			}
 			
@@ -393,9 +347,6 @@ public class World {
 			glPopMatrix();
 		
 		}
-		
-		//glDisable(GL_LIGHT0);
-		//glDisable(GL_LIGHTING);
 	}
 	
 	public void drawBushes(MainLoopGame mainLoop) {	
@@ -406,11 +357,11 @@ public class World {
 		
 			int cameraIsByYPositionAmendment = (Utils.positionToPoint(FirstPersonCameraController.position.y)<0) ? 0 : Utils.positionToPoint(FirstPersonCameraController.position.y);
 			
-			if (!Utils.visiblePoint(bush.Point3Dto2D(), mainLoop, (int) (25-cameraIsByYPositionAmendment))) {
+			if (!Utils.visiblePoint(bush.Point3Dto2D(), mainLoop, (int) (35-cameraIsByYPositionAmendment))) {
 				continue;
 			}
 			
-			if (!Utils.visiblePoint(bush.Point3Dto2D(), mainLoop, (int) (90+90-25+cameraIsByYPositionAmendment))) {
+			if (!Utils.visiblePoint(bush.Point3Dto2D(), mainLoop, (int) (90+90-35+cameraIsByYPositionAmendment))) {
 				continue;
 			}
 			
@@ -441,11 +392,11 @@ public class World {
 		
 			int cameraIsByYPositionAmendment = (Utils.positionToPoint(FirstPersonCameraController.position.y)<0) ? 0 : Utils.positionToPoint(FirstPersonCameraController.position.y);
 			
-			if (!Utils.visiblePoint(rock.Point3Dto2D(), mainLoop, (int) (25-cameraIsByYPositionAmendment))) {
+			if (!Utils.visiblePoint(rock.Point3Dto2D(), mainLoop, (int) (35-cameraIsByYPositionAmendment))) {
 				continue;
 			}
 			
-			if (!Utils.visiblePoint(rock.Point3Dto2D(), mainLoop, (int) (90+90-25+cameraIsByYPositionAmendment))) {
+			if (!Utils.visiblePoint(rock.Point3Dto2D(), mainLoop, (int) (90+90-35+cameraIsByYPositionAmendment))) {
 				continue;
 			}
 			
@@ -476,11 +427,11 @@ public class World {
 		
 			int cameraIsByYPositionAmendment = (Utils.positionToPoint(FirstPersonCameraController.position.y)<0) ? 0 : Utils.positionToPoint(FirstPersonCameraController.position.y);
 			
-			if (!Utils.visiblePoint(flare.Point3Dto2D(), mainLoop, (int) (25-cameraIsByYPositionAmendment))) {
+			if (!Utils.visiblePoint(flare.Point3Dto2D(), mainLoop, (int) (35-cameraIsByYPositionAmendment))) {
 				continue;
 			}
 			
-			if (!Utils.visiblePoint(flare.Point3Dto2D(), mainLoop, (int) (90+90-25+cameraIsByYPositionAmendment))) {
+			if (!Utils.visiblePoint(flare.Point3Dto2D(), mainLoop, (int) (90+90-35+cameraIsByYPositionAmendment))) {
 				continue;
 			}
 			
@@ -490,7 +441,7 @@ public class World {
 			
 			glPushMatrix();
 			
-			glTranslatef(flare.x, flare.y+100f, flare.z);
+			glTranslatef(flare.x, flare.y+80f, flare.z);
 			
 			glRotatef(mainLoop.angle, 0, 1, 0);
 
@@ -503,35 +454,31 @@ public class World {
 		}
 	}
 	
-	public void drawBombs(MainLoopGame mainLoop) {
+	public void drawPoints(MainLoopGame mainLoop) {
 		
-		bombTexture.bind();
-		
-		for (Palm bomb : bombs) {
+		for (Palm point : points) {
 		
 			int cameraIsByYPositionAmendment = (Utils.positionToPoint(FirstPersonCameraController.position.y)<0) ? 0 : Utils.positionToPoint(FirstPersonCameraController.position.y);
 			
-			if (!Utils.visiblePoint(bomb.Point3Dto2D(), mainLoop, (int) (25-cameraIsByYPositionAmendment))) {
+			if (!Utils.visiblePoint(point.Point3Dto2D(), mainLoop, (int) (25-cameraIsByYPositionAmendment))) {
 				continue;
 			}
 			
-			if (!Utils.visiblePoint(bomb.Point3Dto2D(), mainLoop, (int) (90+90-25+cameraIsByYPositionAmendment))) {
+			if (!Utils.visiblePoint(point.Point3Dto2D(), mainLoop, (int) (90+90-35+cameraIsByYPositionAmendment))) {
 				continue;
 			}
 			
-			if (Utils.distance2Points(bomb.Point3Dto2D(), FirstPersonCameraController.Point3Dto2D()) > SEE_WORLD) {
+			if (Utils.distance2Points(point.Point3Dto2D(), FirstPersonCameraController.Point3Dto2D()) > SEE_WORLD) {
 				continue;
 			}
 			
 			glPushMatrix();
 			
-			glTranslatef(bomb.x, bomb.y+100f, bomb.z);
+			glTranslatef(point.x, point.y + 100.0f, point.z);
 			
-			glRotatef(mainLoop.angle, 0, 1, 0);
-
-			glScalef(300.f, 300.f, 300.f);
+			//glRotatef(mainLoop.angle, 0, 1, 0);
 			
-			glCallList(bombModel.modelOBJ);
+			Crate.draw(this);
 			
 			glPopMatrix();
 		
@@ -553,7 +500,7 @@ public class World {
 	
 	public void generateWorld() {
 		brickArray.add(new Point3D(0, -1, 0));
-		palmRandom = (float) Math.random() / 6.f;
+		palmRandom = (float) Math.random() / 10.f;
 		bushRandom = (float) Math.random() / 4.f;
 		generateNewWorld(1);
 	}
@@ -566,7 +513,7 @@ public class World {
 		boolean generatedBush = false;
 		boolean generateRock = false;
 		boolean generateFlare = false;
-		boolean generateBomb = false;
+		boolean generateCrate = false;
 		// generate Palm
 		if (Math.random() < palmRandom) {
 			float palmX = point.x * 100;
@@ -601,13 +548,14 @@ public class World {
 			flares.add(new Palm(palmX, palmZ, palmY));
 			generateFlare = true;
 		}
-		// generate Bomb
-		if (!generateFlare && !generatedBush && !generatedPalm && !generateRock && Math.random() < 0.008f) {
+		// generate Crate
+		if (!generateFlare && !generatedBush && !generatedPalm && !generateRock && Math.random() < 0.002f) {
 			float palmX = point.x * 100;
 			float palmY = point.z * 100;
 			float palmZ = Utils.getSmallerYByPoint(Utils.positionToPoint(palmX), Utils.positionToPoint(palmY), this) * 100;
-			bombs.add(new Palm(palmX, palmZ, palmY));
-			generateBomb = true;
+			points.add(new Palm(palmX, palmZ, palmY));
+			User.crateFoundMax++;
+			generateCrate = true;
 		}
 		if (Math.random() < 0.003f) {
 			if (point.x > 25 || point.z > 25 || point.x < -25 || point.z < -25) {
@@ -863,27 +811,15 @@ public class World {
 	
 	public void bombController(MainLoopGame mainLoop) {
 		ArrayList<Palm> toRemove = new ArrayList<Palm>();
-		for (Palm bomb : bombs) {
-			if (Utils.getDistance((int) bomb.x, (int) bomb.y + 200, (int) bomb.z, (int) -FirstPersonCameraController.position.x, (int) -FirstPersonCameraController.position.y, (int) -FirstPersonCameraController.position.z) < 250) {
-				toRemove.add(bomb);
-				if (User.health>50) {
-					User.health -= 50;
-				} else {
-					User.makeDead(mainLoop);
-				}
+		for (Palm point : points) {
+			if (Utils.getDistance((int) point.x, (int) point.y + 200, (int) point.z, (int) -FirstPersonCameraController.position.x, (int) -FirstPersonCameraController.position.y, (int) -FirstPersonCameraController.position.z) < 250) {
+				toRemove.add(point);
+				User.crateFound++;
 				break;
-			}
-			for (Monster monster : monsters) {
-				if (Utils.getDistance((int) bomb.x, (int) bomb.y + 200, (int) bomb.z, (int) monster.x, (int) monster.y, (int) monster.z) < 250) {
-					toRemove.add(bomb);
-					monster.health -= 50;
-					monster.hitBlend = true;
-					break;
-				}
 			}
 		}
 		if (toRemove.size() > 0) {
-			bombs.removeAll(toRemove);
+			points.removeAll(toRemove);
 		}
 	}
 }

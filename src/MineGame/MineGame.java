@@ -174,7 +174,7 @@ public class MineGame {
 		mainLoop.world.rockTexture = TextureCRUD.loadTexture("rock.jpg", "JPG");
 		mainLoop.world.flaresTexture = TextureCRUD.loadTexture("flares.jpg", "JPG");
 		mainLoop.world.goblinTexture = TextureCRUD.loadTexture("goblin.jpg", "JPG");
-		mainLoop.world.bombTexture = TextureCRUD.loadTexture("bomb.jpg", "JPG");
+		mainLoop.world.crateTexture = TextureCRUD.loadTexture("crate.png", "PNG");
 	}
 
 	private static void loadWorld(MainLoopGame mainLoop) {
@@ -249,7 +249,6 @@ public class MineGame {
 		loadModel(mainLoop, mainLoop.world.rockModel, "Stones.obj");
 		loadModel(mainLoop, mainLoop.world.flaresModel, "Flares.obj");
 		loadModel(mainLoop, mainLoop.world.goblin, "Mega_Mech.obj");
-		loadModel(mainLoop, mainLoop.world.bombModel, "Bomb.obj");
 	}
 	
 	/**

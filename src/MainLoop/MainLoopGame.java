@@ -134,7 +134,7 @@ public class MainLoopGame {
 		angle %= 360;
 	}
 	
-	private final int MONSTER_SEE_ME = 15;
+	private final int MONSTER_SEE_ME = 20;
 	
 	private void monstersController(MainLoopGame mainLoop) {
 		ArrayList<Monster> toRemoveMonster = new ArrayList<Monster>();
@@ -151,7 +151,7 @@ public class MainLoopGame {
 					angle = -90+Utils.getAngle(new Point((int) -FirstPersonCameraController.position.x, (int) -FirstPersonCameraController.position.z), new Point((int) monster.x, (int) monster.z));
 				}
 					
-				monster.distanceTemp = (int) (8.0f * Math.random()) + 2;
+				monster.distanceTemp = 0;
 				
 				monster.angleTemp = angle;
 				
@@ -232,7 +232,6 @@ public class MainLoopGame {
 		        monster.y = positionYHeighest * 100;
 		    }
 			
-			/* bullet monsters controller */
 			if (monster.fireTemp == monster.fireTempMax) {
 		    	float angle = -90+Utils.getAngle(new Point((int) -FirstPersonCameraController.position.x, (int) -FirstPersonCameraController.position.z), new Point((int) monster.x, (int) monster.z));
 				if (monster.health > 0 && Math.abs(angle-monster.angle) < 15 && Utils.distance2Points(monster.Point3Dto2D(), FirstPersonCameraController.Point3Dto2D()) < MONSTER_SEE_ME) {
@@ -402,16 +401,24 @@ public class MainLoopGame {
         
         FontMineGame.drawString("Health: "+health, 10, 10);
         
+        String crateFound = String.valueOf(User.crateFound);
+        
+        String crateFoundMax = String.valueOf(User.crateFoundMax);
+        
+        FontMineGame.drawString("Boxes found: "+crateFound+" from "+crateFoundMax, 10, 20);
+        
         String ammo = String.valueOf(User.ammo);
         
-        FontMineGame.drawString("Ammo: "+ammo, 10, 20);
+        FontMineGame.drawString("Ammo: "+ammo, 10, 30);
+        
+        FontMineGame.drawString("You should find all boxes", 10, 290);
         
         if (!User.alive()) {
         	FontMineGame.drawString("You lose", (float) (Window.getWidth() * 0.45f), (float) (Window.getHeight() * 0.25f));
         	FontMineGame.drawString("Press R to restart", (float) (Window.getWidth() * 0.40f), (float) (Window.getHeight() * 0.27f));
         }
         
-        if (User.alive() && world.monsters.size() == 0 && world.horizontalGenerateTemp.contains(new Point(0, world.NOT_SEE_WORLD))) {
+        if (User.alive() && User.crateFound == User.crateFoundMax && world.horizontalGenerateTemp.contains(new Point(0, world.NOT_SEE_WORLD))) {
         	FontMineGame.drawString("You win", (float) (Window.getWidth() * 0.45f), (float) (Window.getHeight() * 0.25f));
         }
         
