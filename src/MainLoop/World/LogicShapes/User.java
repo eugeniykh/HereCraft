@@ -25,6 +25,8 @@ public class User {
 		dead = false;
 		mainLoop.camera.yaw = 0;
 		mainLoop.camera.pitch = 0;
+		crateFound = 0;
+		crateFoundMax = 0;
 	}
 	
 	public static void healthRegeneration() {
