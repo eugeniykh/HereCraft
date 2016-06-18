@@ -69,6 +69,9 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  *
  * This is a <em>very basic</em> skeleton to init a game and run it.
@@ -79,7 +82,7 @@ import java.nio.FloatBuffer;
 public class MineGame {
 
 	/** Game title */
-	public static final String GAME_TITLE = "HereCraft";
+	public static final String GAME_TITLE = "BoxCraft";
 
 	/**
 	 * No constructor needed - this class is static
@@ -163,17 +166,12 @@ public class MineGame {
 		mainLoop.world.sideGrass = TextureCRUD.loadTexture("grass.jpg", "JPG");
 		mainLoop.world.grassFonNewTexture = TextureCRUD.loadTexture("upper_grass_fon_new.jpg", "JPG");
 		mainLoop.world.ground = TextureCRUD.loadTexture("ground.jpg", "JPG");
-		mainLoop.world.modelTexture = TextureCRUD.loadTexture("wraith.jpg", "JPG");
-		mainLoop.world.modelTexture_2 = TextureCRUD.loadTexture("wraith_d.jpg", "JPG");
 		mainLoop.world.staffTexture = TextureCRUD.loadTexture("staff.jpg", "JPG");
 		mainLoop.world.palmTexture = TextureCRUD.loadTexture("palm.jpg", "JPG");
-		mainLoop.world.frostIceTexture = TextureCRUD.loadTexture("frost_ice.png", "PNG");
-		mainLoop.world.redIceTexture = TextureCRUD.loadTexture("red_ice.png", "PNG");
 		mainLoop.world.skyTexture = TextureCRUD.loadTexture("sky.jpg", "JPG");
 		mainLoop.world.bushTexture = TextureCRUD.loadTexture("corn.jpg", "JPG");
 		mainLoop.world.rockTexture = TextureCRUD.loadTexture("rock.jpg", "JPG");
 		mainLoop.world.flaresTexture = TextureCRUD.loadTexture("flares.jpg", "JPG");
-		mainLoop.world.goblinTexture = TextureCRUD.loadTexture("goblin.jpg", "JPG");
 		mainLoop.world.crateTexture = TextureCRUD.loadTexture("crate.png", "PNG");
 	}
 
@@ -217,11 +215,11 @@ public class MineGame {
 		
 		glEnable(GL_FOG); {
 			FloatBuffer fogColor = BufferUtils.createFloatBuffer(4);
-			fogColor.put(0.5f).put(0.5f).put(1.0f).put(1.0f).flip();
+			fogColor.put(0.5f).put(0.5f).put(0.5f).put(1.0f).flip();
 
 			glFogi(GL_FOG_MODE, GL_EXP);
 			glFog(GL_FOG_COLOR, fogColor);
-			glFogf(GL_FOG_DENSITY, 0.0003f);
+			glFogf(GL_FOG_DENSITY, 0.001f);
 			glHint(GL_FOG_HINT, GL_DONT_CARE);
 			glFogf(GL_FOG_START, 25000.0f);
 			glFogf(GL_FOG_END, 27000.0f);
@@ -241,14 +239,11 @@ public class MineGame {
 	
 	
 	private static void loadModels(MainLoopGame mainLoop) {
-		loadModel(mainLoop, mainLoop.world.model, "Wraith.obj");
 		loadModel(mainLoop, mainLoop.world.staff, "Nightwing_Staff.obj");
-		loadModel(mainLoop, mainLoop.world.bullet, "Killer_Frost_Ice_Block.obj");
 		loadModel(mainLoop, mainLoop.world.palmModel, "MY_PALM.obj");
 		loadModel(mainLoop, mainLoop.world.bushModel, "corn.obj");
 		loadModel(mainLoop, mainLoop.world.rockModel, "Stones.obj");
 		loadModel(mainLoop, mainLoop.world.flaresModel, "Flares.obj");
-		loadModel(mainLoop, mainLoop.world.goblin, "Mega_Mech.obj");
 	}
 	
 	/**

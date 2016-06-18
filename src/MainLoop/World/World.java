@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
@@ -51,27 +53,18 @@ public class World {
 	
 	public HashMap<Point, Integer> verticalMap = new HashMap<Point, Integer>();
 	
-	public ModelOBJ model = new ModelOBJ();
 	public ModelOBJ staff = new ModelOBJ();
-	public ModelOBJ bullet = new ModelOBJ();
 	public ModelOBJ palmModel = new ModelOBJ();
 	public ModelOBJ bushModel = new ModelOBJ();
 	public ModelOBJ rockModel = new ModelOBJ();
 	public ModelOBJ flaresModel = new ModelOBJ();
 	
-	public ModelOBJ goblin = new ModelOBJ();
-	
-	/* model Texture monsters 1 & 2 & goblinTexture */
-	public Texture modelTexture, modelTexture_2, goblinTexture;
-	
 	public Texture staffTexture;
-	public Texture frostIceTexture;
 	public Texture palmTexture;
 	public Texture skyTexture;
 	public Texture bushTexture;
 	public Texture rockTexture;
 	public Texture flaresTexture;
-	public Texture redIceTexture;
 	public Texture crateTexture;
 	
 	public ArrayList<Bullet> bullets = new ArrayList<Bullet>();
@@ -91,6 +84,24 @@ public class World {
 	public final int SEE_WORLD = 35;
 	
 	public final int NOT_SEE_WORLD = 45;
+	
+	public int timer = 0;
+	
+	public Timer time;
+	
+	public World() {
+		
+		timer = 0;
+		
+		time = new Timer();
+
+        time.schedule(new TimerTask() {
+            @Override
+            public void run() {
+            	timer++;
+            }
+        }, 3000, 1000); 
+	}
 	
 	public void drawStaff(MainLoopGame mainLoop) {
 		
@@ -114,41 +125,11 @@ public class World {
 		
 		mainLoop.world.staffTexture.bind();
 		
-		glScalef(20.f, 25.f-mainLoop.keyEventsHandler.clickBlockPerFrames / 2.f, 20.f);
+		glScalef(20.f, 20.f, 20.f);
 		
 	    glCallList(mainLoop.world.staff.modelOBJ);
 		
 		glPopMatrix();
-	}
-	
-	public void drawBullet(MainLoopGame mainLoop) {
-		
-		GL20.glUseProgram( mainLoop.shader.getProgramId() );
-		
-		for (Bullet bulletPoint : mainLoop.world.bullets) {
-			
-			if (bulletPoint.owner==0) {
-				mainLoop.world.frostIceTexture.bind();
-			} else {
-				mainLoop.world.redIceTexture.bind();
-			}
-			
-			glPushMatrix();
-			
-			glTranslatef(bulletPoint.x, bulletPoint.y,  bulletPoint.z);
-
-			float sizeBulletPoint = (bulletPoint.owner==0) ? 15.0f : 20.0f;
-			
-			glScalef(sizeBulletPoint, sizeBulletPoint, sizeBulletPoint);
-			
-			if (bulletPoint.speed > 1.0f) {
-				glRotatef(mainLoop.angle, 0, 1, 0);			
-			}
-			
-			glCallList(bullet.modelOBJ);
-			
-			glPopMatrix();
-		}
 	}
 	
 	public void drawWorld(MainLoopGame mainLoop) {
@@ -216,9 +197,9 @@ public class World {
 		
 		drawBushes(mainLoop);
 		
-		GL20.glUseProgram( mainLoop.shader.getProgramId() );
-		
 		drawRocks(mainLoop);
+		
+		GL20.glUseProgram( mainLoop.shader.getProgramId() );
 		
 		drawFlares(mainLoop);
 		
@@ -227,92 +208,6 @@ public class World {
 		GL20.glUseProgram(0);
 		
 		drawDome(mainLoop);	
-		
-		// must be in back of all
-		
-		GL20.glUseProgram( mainLoop.shader.getProgramId() );
-		
-		drawMonsters(mainLoop);
-		
-		GL20.glUseProgram(0);
-	}
-	
-	public void drawMonsters(MainLoopGame mainLoop) {
-		
-		for (Monster monster : mainLoop.world.monsters) {
-		
-			int cameraIsByYPositionAmendment = (Utils.positionToPoint(FirstPersonCameraController.position.y)<0) ? 0 : Utils.positionToPoint(FirstPersonCameraController.position.y);
-			
-			if (!Utils.visiblePoint(monster.Point3Dto2D(), mainLoop, (int) (35-cameraIsByYPositionAmendment))) {
-				continue;
-			}
-			
-			if (!Utils.visiblePoint(monster.Point3Dto2D(), mainLoop, (int) (90+90-35+cameraIsByYPositionAmendment))) {
-				continue;
-			}
-			
-			if (Utils.distance2Points(monster.Point3Dto2D(), FirstPersonCameraController.Point3Dto2D()) > SEE_WORLD) {
-				continue;
-			}
-
-			if (monster.type == 0) {
-			
-				if (monster.texture==0) modelTexture.bind(); else modelTexture_2.bind();
-			
-			} else {
-				
-				goblinTexture.bind();
-				
-			}
-			
-			glPushMatrix();
-			
-			if (monster.type == 0) {
-			
-				glTranslatef(monster.x, monster.y,  monster.z);
-			
-			} else {
-				
-				glTranslatef(monster.x, monster.y+50f, monster.z);
-				
-			}
-			
-			glRotatef(-monster.angle, 0, 1, 0);
-			
-			if (monster.type == 0) {
-			
-				glScalef(50.f*monster.size, 50.f*monster.size, 50.f*monster.size);
-			
-			} else {
-				
-				glScalef(20.0f*monster.size, 20.0f*monster.size, 20.0f*monster.size);
-				
-			}
-			
-			if (monster.size < 1.0f || monster.hitBlend) {
-				glEnable(GL_BLEND);
-			}			
-			
-			if (monster.type == 0) {
-			
-				glCallList(model.modelOBJ);
-		    
-			} else {
-				
-				glCallList(goblin.modelOBJ);
-				
-			}
-			
-		    if (monster.size < 1.0f || monster.hitBlend) {
-		    	
-		    	monster.hitBlend = false;
-		    	
-		    	glDisable(GL_BLEND);
-		    }
-		    
-			glPopMatrix();
-			
-		}
 	}
 	
 	public void drawPalms(MainLoopGame mainLoop) {
@@ -500,7 +395,7 @@ public class World {
 	
 	public void generateWorld() {
 		brickArray.add(new Point3D(0, -1, 0));
-		palmRandom = (float) Math.random() / 10.f;
+		palmRandom = (float) Math.random() / 20.f;
 		bushRandom = (float) Math.random() / 4.f;
 		generateNewWorld(1);
 	}
@@ -557,14 +452,14 @@ public class World {
 			User.crateFoundMax++;
 			generateCrate = true;
 		}
-		if (Math.random() < 0.003f) {
+		/*if (Math.random() < 0.003f) {
 			if (point.x > 25 || point.z > 25 || point.x < -25 || point.z < -25) {
 				float monsterX = point.x * 100;
 				float monsterY = point.z * 100;
 				float monsterZ = Monster.getSmallerYByPoint(Utils.positionToPoint(monsterX), Utils.positionToPoint(monsterY), this) * 100;
 				monsters.add(new Monster(monsterX, monsterZ, monsterY));
 			}
-		}
+		}*/
 	}
 	
 	private void generateNewWorld(int radius) {
@@ -795,12 +690,12 @@ public class World {
 		}
 	}
 	
-	public void getAmmo(MainLoopGame mainLoop) {
+	public void getPortal(MainLoopGame mainLoop) {
 		ArrayList<Palm> toRemove = new ArrayList<Palm>();
 		for (Palm flare : flares) {
 			if (Utils.getDistance((int) flare.x, (int) flare.y + 200, (int) flare.z, (int) -FirstPersonCameraController.position.x, (int) -FirstPersonCameraController.position.y, (int) -FirstPersonCameraController.position.z) < 250) {
 				toRemove.add(flare);
-				User.addAmmo(30);
+				User.addAmmo(1);
 				break;
 			}
 		}
@@ -809,7 +704,7 @@ public class World {
 		}
 	}
 	
-	public void bombController(MainLoopGame mainLoop) {
+	public void pointsController(MainLoopGame mainLoop) {
 		ArrayList<Palm> toRemove = new ArrayList<Palm>();
 		for (Palm point : points) {
 			if (Utils.getDistance((int) point.x, (int) point.y + 200, (int) point.z, (int) -FirstPersonCameraController.position.x, (int) -FirstPersonCameraController.position.y, (int) -FirstPersonCameraController.position.z) < 250) {

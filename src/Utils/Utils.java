@@ -20,7 +20,7 @@ public class Utils {
 		int y = (int) (FirstPersonCameraController.Point3Dto2D().y
 				- (float) Math.cos(Math.toRadians(-mainLoop.camera.yaw - angle)) * 15f);
 		return pointNearLine(new Point(x, y), new Point((int) FirstPersonCameraController.Point3Dto2D().x,
-				(int) FirstPersonCameraController.Point3Dto2D().y), p1) > -50;
+				(int) FirstPersonCameraController.Point3Dto2D().y), p1) > -150;
 	}
 
 	public static float pointNearLine(Point line_point1, Point line_point2, Point testPoint) {
