@@ -126,7 +126,7 @@ public class MineGame {
 	private static void init(MainLoopGame mainLoop) throws Exception {
 
 		Window.setTitle(GAME_TITLE);
-		Window.setResolution(800, 600, false);
+		Window.setResolution(1024, 768, false);
 		Window.setVSync(false);
 		Window.setFPS(5000);
 		//Display.setFullscreen(true);
@@ -173,6 +173,7 @@ public class MineGame {
 		mainLoop.world.rockTexture = TextureCRUD.loadTexture("rock.jpg", "JPG");
 		mainLoop.world.flaresTexture = TextureCRUD.loadTexture("flares.jpg", "JPG");
 		mainLoop.world.crateTexture = TextureCRUD.loadTexture("crate.png", "PNG");
+		mainLoop.world.bombTexture = TextureCRUD.loadTexture("bomb.jpg", "JPG"); 
 	}
 
 	private static void loadWorld(MainLoopGame mainLoop) {
@@ -215,14 +216,14 @@ public class MineGame {
 		
 		glEnable(GL_FOG); {
 			FloatBuffer fogColor = BufferUtils.createFloatBuffer(4);
-			fogColor.put(0.5f).put(0.5f).put(0.5f).put(1.0f).flip();
+			fogColor.put(0.2f).put(0.0f).put(0.0f).put(1.0f).flip();
 
 			glFogi(GL_FOG_MODE, GL_EXP);
 			glFog(GL_FOG_COLOR, fogColor);
-			glFogf(GL_FOG_DENSITY, 0.001f);
+			glFogf(GL_FOG_DENSITY, 0.002f);
 			glHint(GL_FOG_HINT, GL_DONT_CARE);
-			glFogf(GL_FOG_START, 25000.0f);
-			glFogf(GL_FOG_END, 27000.0f);
+			glFogf(GL_FOG_START, 135000.0f);
+			glFogf(GL_FOG_END, 137000.0f);
 		}
 	}
 	
@@ -244,6 +245,8 @@ public class MineGame {
 		loadModel(mainLoop, mainLoop.world.bushModel, "corn.obj");
 		loadModel(mainLoop, mainLoop.world.rockModel, "Stones.obj");
 		loadModel(mainLoop, mainLoop.world.flaresModel, "Flares.obj");
+		loadModel(mainLoop, mainLoop.world.goblin, "Mega_Mech.obj");
+		loadModel(mainLoop, mainLoop.world.bombModel, "Bomb.obj");
 	}
 	
 	/**
