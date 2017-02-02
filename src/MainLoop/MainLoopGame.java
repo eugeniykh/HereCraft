@@ -125,6 +125,8 @@ public class MainLoopGame {
 		
 		monstersController(this);
 		
+		world.crateController(this);
+		
 		world.bombController(this);
 
    	 	world.needToGenerateNewWorld(this);
@@ -134,7 +136,7 @@ public class MainLoopGame {
 		angle %= 360;
 	}
 	
-	private final int MONSTER_SEE_ME = 20;
+	private final int MONSTER_SEE_ME = 15;
 	
 	private void monstersController(MainLoopGame mainLoop) {
 		ArrayList<Monster> toRemoveMonster = new ArrayList<Monster>();
@@ -151,7 +153,7 @@ public class MainLoopGame {
 					angle = -90+Utils.getAngle(new Point((int) -FirstPersonCameraController.position.x, (int) -FirstPersonCameraController.position.z), new Point((int) monster.x, (int) monster.z));
 				}
 					
-				monster.distanceTemp = 0;
+				monster.distanceTemp = (int) (18.0f * Math.random()) + 2;
 				
 				monster.angleTemp = angle;
 				
@@ -261,10 +263,10 @@ public class MainLoopGame {
 			if (monster.health > 0 && Utils.getDistance((int) monster.x, (int) monster.y+200, (int) monster.z, (int) -FirstPersonCameraController.position.x, (int) -FirstPersonCameraController.position.y, (int) -FirstPersonCameraController.position.z) < 350) {
     			// check if health more than 0
 				if (User.alive()) {
-    				//User.health -= 1.f;
+    				User.health -= 1.f;
     				healthCaredMonster = true;
     			} else {
-    				User.makeDead(this);
+    				User.makeDead();
     			}
     		}
 			
@@ -329,7 +331,7 @@ public class MainLoopGame {
 
 				for (Monster monster : mainLoop.world.monsters) {
 					
-					if (bullet.owner == 0 && Utils.getDistance((int) monster.x, (int) monster.y+200, (int) monster.z, (int) bullet.x, (int) bullet.y, (int) bullet.z) < 70) {
+					if (Utils.getDistance((int) monster.x, (int) monster.y+200, (int) monster.z, (int) bullet.x, (int) bullet.y, (int) bullet.z) < 70) {
 						if (monster.health > 0) {
 							monster.health -= 5.f;
 							float angle = -90+Utils.getAngle(new Point((int) -FirstPersonCameraController.position.x, (int) -FirstPersonCameraController.position.z), new Point((int) monster.x, (int) monster.z));
@@ -344,12 +346,12 @@ public class MainLoopGame {
 					}
 				}
 				
-				if (bullet.owner == 1 && Utils.getDistance((int) -FirstPersonCameraController.position.x, (int) -FirstPersonCameraController.position.y, (int) -FirstPersonCameraController.position.z, (int) bullet.x, (int) bullet.y, (int) bullet.z) < Bullet.speedMax) {
+				if (Utils.getDistance((int) -FirstPersonCameraController.position.x, (int) -FirstPersonCameraController.position.y, (int) -FirstPersonCameraController.position.z, (int) bullet.x, (int) bullet.y, (int) bullet.z) < Bullet.speedMax) {
 					if (User.alive()) {
 						User.health -= 1.5f;
 						toRemove.add(bullet);
 					} else {
-						User.makeDead(mainLoop);
+						User.makeDead();
 					}
 				}
 				
@@ -388,14 +390,19 @@ public class MainLoopGame {
         GL11.glLoadIdentity();
         GL11.glOrtho(0, Window.getWidth(), Window.getHeight(), 0, 1, -1);
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
-
-        glColor3f(0, 0, 0);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        
+        glColor3f(1, 1, 1);
         
         glPushMatrix();
 
-        int monsterSize = world.monsters.size();
+        //int monsterSize = world.monsters.size();
         
-        FontMineGame.drawString("Monsters: "+monsterSize, (float) (Window.getWidth() * 0.85f), 10);
+        //FontMineGame.drawString("Monsters: "+monsterSize, (float) (Window.getWidth() * 0.90f), 10);
+        
+        //String fps = String.valueOf(FPSHandler.getFPS());
+        
+        //FontMineGame.drawString("FPS: "+fps, Window.getWidth() * 0.90f, 10);
 
         String health = String.valueOf(Math.round(User.health));
         
@@ -405,13 +412,11 @@ public class MainLoopGame {
         
         String crateFoundMax = String.valueOf(User.crateFoundMax);
         
-        FontMineGame.drawString("Boxes found: "+crateFound+" from "+crateFoundMax, 10, 20);
+        FontMineGame.drawString("Boxes found: "+crateFound, 10, 20);
         
         String ammo = String.valueOf(User.ammo);
         
         FontMineGame.drawString("Ammo: "+ammo, 10, 30);
-        
-        FontMineGame.drawString("You should find all boxes", 10, 290);
         
         if (!User.alive()) {
         	FontMineGame.drawString("You lose", (float) (Window.getWidth() * 0.45f), (float) (Window.getHeight() * 0.25f));
@@ -422,13 +427,7 @@ public class MainLoopGame {
         	FontMineGame.drawString("You win", (float) (Window.getWidth() * 0.45f), (float) (Window.getHeight() * 0.25f));
         }
         
-        glPopMatrix();
-        
-        glPushMatrix();
-        
-        String fps = String.valueOf(FPSHandler.getFPS());
-        
-        FontMineGame.drawString("FPS: "+fps, Window.getWidth() * 0.85f, 20);
+        FontMineGame.drawString("You should find all boxes", 10, 375);
         
         glPopMatrix();
         

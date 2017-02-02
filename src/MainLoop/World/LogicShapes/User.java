@@ -39,7 +39,7 @@ public class User {
 		return health > 0 && dead == false;
 	}
 	
-	public static void makeDead(MainLoopGame mainLoop) {
+	public static void makeDead() {
 		health = 0;
 		dead = true;
 	}

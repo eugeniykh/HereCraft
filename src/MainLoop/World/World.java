@@ -58,6 +58,7 @@ public class World {
 	public ModelOBJ bushModel = new ModelOBJ();
 	public ModelOBJ rockModel = new ModelOBJ();
 	public ModelOBJ flaresModel = new ModelOBJ();
+	public ModelOBJ bombModel = new ModelOBJ(); 
 	
 	public ModelOBJ goblin = new ModelOBJ();
 	
@@ -73,6 +74,7 @@ public class World {
 	public Texture flaresTexture;
 	public Texture redIceTexture;
 	public Texture crateTexture;
+	public Texture bombTexture; 
 	
 	public ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 	
@@ -88,7 +90,9 @@ public class World {
 	
 	public ArrayList<Palm> points = new ArrayList<Palm>();
 	
-	public final int SEE_WORLD = 35;
+	public ArrayList<Palm> bombs = new ArrayList<Palm>();
+	
+	public final int SEE_WORLD = 20;
 	
 	public final int NOT_SEE_WORLD = 45;
 	
@@ -216,11 +220,13 @@ public class World {
 		
 		drawBushes(mainLoop);
 		
-		GL20.glUseProgram( mainLoop.shader.getProgramId() );
-		
 		drawRocks(mainLoop);
 		
+		GL20.glUseProgram( mainLoop.shader.getProgramId() );
+		
 		drawFlares(mainLoop);
+		
+		drawBombs(mainLoop);
 		
 		drawPoints(mainLoop);
 		
@@ -485,6 +491,41 @@ public class World {
 		}
 	}
 	
+public void drawBombs(MainLoopGame mainLoop) {
+	
+		bombTexture.bind();
+		
+		for (Palm point : bombs) {
+		
+			int cameraIsByYPositionAmendment = (Utils.positionToPoint(FirstPersonCameraController.position.y)<0) ? 0 : Utils.positionToPoint(FirstPersonCameraController.position.y);
+			
+			if (!Utils.visiblePoint(point.Point3Dto2D(), mainLoop, (int) (25-cameraIsByYPositionAmendment))) {
+				continue;
+			}
+			
+			if (!Utils.visiblePoint(point.Point3Dto2D(), mainLoop, (int) (90+90-35+cameraIsByYPositionAmendment))) {
+				continue;
+			}
+			
+			if (Utils.distance2Points(point.Point3Dto2D(), FirstPersonCameraController.Point3Dto2D()) > SEE_WORLD) {
+				continue;
+			}
+			
+			glPushMatrix();
+			
+			glTranslatef(point.x, point.y + 100.0f, point.z);
+			
+			glRotatef(mainLoop.angle, 0, 1, 0);
+			
+			glScalef(300.f, 300.f, 300.f); 
+			
+			glCallList(bombModel.modelOBJ);
+			
+			glPopMatrix();
+		
+		}
+	}
+	
 	public void drawDome(MainLoopGame mainLoop) {
 		
 		glPushMatrix();
@@ -513,6 +554,7 @@ public class World {
 		boolean generatedBush = false;
 		boolean generateRock = false;
 		boolean generateFlare = false;
+		boolean generateBomb = false;
 		boolean generateCrate = false;
 		// generate Palm
 		if (Math.random() < palmRandom) {
@@ -548,8 +590,16 @@ public class World {
 			flares.add(new Palm(palmX, palmZ, palmY));
 			generateFlare = true;
 		}
+		// generate Bomb
+		if (!generateFlare && !generatedBush && !generatedPalm && !generateRock && Math.random() < 0.01f) {
+			float palmX = point.x * 100;
+			float palmY = point.z * 100;
+			float palmZ = Utils.getSmallerYByPoint(Utils.positionToPoint(palmX), Utils.positionToPoint(palmY), this) * 100;
+			bombs.add(new Palm(palmX, palmZ, palmY));
+			generateBomb = true;
+		}
 		// generate Crate
-		if (!generateFlare && !generatedBush && !generatedPalm && !generateRock && Math.random() < 0.002f) {
+		if (!generateFlare && !generatedBush && !generatedPalm && !generateRock && !generateBomb && Math.random() < 0.002f) {
 			float palmX = point.x * 100;
 			float palmY = point.z * 100;
 			float palmZ = Utils.getSmallerYByPoint(Utils.positionToPoint(palmX), Utils.positionToPoint(palmY), this) * 100;
@@ -557,7 +607,7 @@ public class World {
 			User.crateFoundMax++;
 			generateCrate = true;
 		}
-		if (Math.random() < 0.003f) {
+		if (Math.random() < 0.001f) {
 			if (point.x > 25 || point.z > 25 || point.x < -25 || point.z < -25) {
 				float monsterX = point.x * 100;
 				float monsterY = point.z * 100;
@@ -809,7 +859,7 @@ public class World {
 		}
 	}
 	
-	public void bombController(MainLoopGame mainLoop) {
+	public void crateController(MainLoopGame mainLoop) {
 		ArrayList<Palm> toRemove = new ArrayList<Palm>();
 		for (Palm point : points) {
 			if (Utils.getDistance((int) point.x, (int) point.y + 200, (int) point.z, (int) -FirstPersonCameraController.position.x, (int) -FirstPersonCameraController.position.y, (int) -FirstPersonCameraController.position.z) < 250) {
@@ -820,6 +870,33 @@ public class World {
 		}
 		if (toRemove.size() > 0) {
 			points.removeAll(toRemove);
+		}
+	}
+	
+	public void bombController(MainLoopGame mainLoop) {
+		ArrayList<Palm> toRemove = new ArrayList<Palm>();
+		for (Palm point : bombs) {
+			if (Utils.getDistance((int) point.x, (int) point.y + 200, (int) point.z, (int) -FirstPersonCameraController.position.x, (int) -FirstPersonCameraController.position.y, (int) -FirstPersonCameraController.position.z) < 250) {
+				toRemove.add(point);
+				// check if health more than 0
+				if (User.alive()) {
+    				User.health -= 30.f;
+    			} else {
+    				User.makeDead();
+    			}
+				break;
+			}
+			for (Monster monster : mainLoop.world.monsters) {
+				if (Utils.getDistance((int) monster.x, (int) monster.y, (int) monster.z, (int) point.x, (int) point.y, (int) point.z) < 250) {
+					monster.health -= 30.f;
+					monster.hitBlend = true;
+					toRemove.add(point);
+					break;
+				}
+			}
+		}
+		if (toRemove.size() > 0) {
+			bombs.removeAll(toRemove);
 		}
 	}
 }
