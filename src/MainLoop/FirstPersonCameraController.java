@@ -80,7 +80,7 @@ public class FirstPersonCameraController
     	 positionNewVirtual.x = position.x - addPositionX * 2.5f * direct;
     	 positionNewVirtual.z = position.z + addPositionY * 2.5f * direct;
     	 
-    	 mainLoop.world.getPortal(mainLoop);
+    	 mainLoop.world.getAmmo(mainLoop);
     	 
     	 positionBackWards.y = (gravityAcceleration != 0) ? Utils.positionToPoint(-position.y)-3 : getSmallerYByPoint(Utils.positionToPoint(-positionBackWards.x), Utils.positionToPoint(-positionBackWards.z), mainLoop.world);
     	 

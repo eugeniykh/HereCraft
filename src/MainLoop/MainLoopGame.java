@@ -120,8 +120,10 @@ public class MainLoopGame {
 		if (User.alive()) {
 			keyEventsHandler.LoopEventClick(this);
 		}
+
+		bulletController(this);
 		
-		glColor3f((float)User.crateFound/(float)User.crateFoundMax, (float)User.crateFound/(float)User.crateFoundMax, (float)User.crateFound/(float)User.crateFoundMax);
+		monstersController(this);
 		
 		world.crateController(this);
 		
@@ -129,6 +131,7 @@ public class MainLoopGame {
 
    	 	world.needToGenerateNewWorld(this);
 		
+		// TODO: all your game logic goes here.
 		angle += 5.0f;
 		angle %= 360;
 	}
@@ -375,7 +378,9 @@ public class MainLoopGame {
 		
 		camera.lookThrough(world);
 		
-		//world.drawStaff(this);
+		world.drawStaff(this);
+
+		world.drawBullet(this);
 		
 		world.drawWorld(this);
 		
@@ -399,9 +404,9 @@ public class MainLoopGame {
         
         //FontMineGame.drawString("FPS: "+fps, Window.getWidth() * 0.90f, 10);
 
-        //String health = String.valueOf(Math.round(User.health));
+        String health = String.valueOf(Math.round(User.health));
         
-        //FontMineGame.drawString("Health: "+health, 10, 10);
+        FontMineGame.drawString("Health: "+health, 10, 10);
         
         String crateFound = String.valueOf(User.crateFound);
         
@@ -411,22 +416,15 @@ public class MainLoopGame {
         
         String ammo = String.valueOf(User.ammo);
         
-        FontMineGame.drawString("Portal " + ammo + " found", 10, 20);
+        FontMineGame.drawString("Ammo: "+ammo, 10, 30);
         
         if (!User.alive()) {
         	FontMineGame.drawString("You lose", (float) (Window.getWidth() * 0.45f), (float) (Window.getHeight() * 0.25f));
         	FontMineGame.drawString("Press R to restart", (float) (Window.getWidth() * 0.40f), (float) (Window.getHeight() * 0.27f));
-        }*/
+        }
         
-        String timePlaying = ((world.timer > 60) ? String.valueOf(world.timer / 60)+" minutes " + String.valueOf(world.timer % 60) + " seconds" : String.valueOf(world.timer) + " seconds");
-        
-        if (User.crateFound == User.crateFoundMax && world.horizontalGenerateTemp.contains(new Point(0, world.NOT_SEE_WORLD))) {
-        	FontMineGame.drawString("Youre score is "+timePlaying, (float) (Window.getWidth() * 0.35f), (float) (Window.getHeight() * 0.25f));
-        	FontMineGame.drawString("Press R to restart", (float) (Window.getWidth() * 0.43f), (float) (Window.getHeight() * 0.27f));
-        	world.time.cancel();
-        	User.makeDead(this);
-        } else {
-        	FontMineGame.drawString(timePlaying, 10, 292);
+        if (User.alive() && User.crateFound == User.crateFoundMax && world.horizontalGenerateTemp.contains(new Point(0, world.NOT_SEE_WORLD))) {
+        	FontMineGame.drawString("You win", (float) (Window.getWidth() * 0.45f), (float) (Window.getHeight() * 0.25f));
         }
         
         FontMineGame.drawString("You should find all boxes", 10, 375);

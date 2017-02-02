@@ -5,9 +5,13 @@ import MineGame.MineGame;
 
 public class User {
 	
+	public static float healthMax = 100.0f;
+	
+	public static float health = 100.0f;
+	
 	public static boolean dead = true;
 	
-	public static int ammoMax = 0;
+	public static int ammoMax = 30;
 	
 	public static int ammo = ammoMax;
 	
@@ -16,6 +20,7 @@ public class User {
 	public static int crateFoundMax;
 	
 	public static void init(MainLoopGame mainLoop) {
+		health = 100f;
 		ammo = ammoMax;
 		dead = false;
 		mainLoop.camera.yaw = 0;
@@ -24,8 +29,14 @@ public class User {
 		crateFoundMax = 0;
 	}
 	
+	public static void healthRegeneration() {
+		if (health < healthMax) {
+			health += 0.1;
+		}
+	}
+	
 	public static boolean alive() {
-		return dead == false;
+		return health > 0 && dead == false;
 	}
 	
 	public static void makeDead() {
