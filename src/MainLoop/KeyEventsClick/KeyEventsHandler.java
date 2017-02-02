@@ -12,7 +12,7 @@ import MainLoop.MainLoopGame;
 
 public class KeyEventsHandler {
 
-	private final int clickBlockPerFramesCount = 5;
+	private final int clickBlockPerFramesCount = 3;
 	
 	public int clickBlockPerFrames = 0;
 	

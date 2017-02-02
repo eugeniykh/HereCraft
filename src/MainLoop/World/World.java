@@ -92,7 +92,7 @@ public class World {
 	
 	public ArrayList<Palm> bombs = new ArrayList<Palm>();
 	
-	public final int SEE_WORLD = 20;
+	public final int SEE_WORLD = 15;
 	
 	public final int NOT_SEE_WORLD = 45;
 	
@@ -167,11 +167,11 @@ public class World {
 			
 			int cameraIsByYPositionAmendment = (Utils.positionToPoint(FirstPersonCameraController.position.y)<0) ? 0 : Utils.positionToPoint(FirstPersonCameraController.position.y);
 			
-			if (!Utils.visiblePoint(point.Point3Dto2D(), mainLoop, (int) (35-cameraIsByYPositionAmendment))) {
+			if (!Utils.visiblePoint(point.Point3Dto2D(), mainLoop, (int) (60-cameraIsByYPositionAmendment))) {
 				continue;
 			}
 			
-			if (!Utils.visiblePoint(point.Point3Dto2D(), mainLoop, (int) (90+90-35+cameraIsByYPositionAmendment))) {
+			if (!Utils.visiblePoint(point.Point3Dto2D(), mainLoop, (int) (90+90-60+cameraIsByYPositionAmendment))) {
 				continue;
 			}
 			
@@ -195,11 +195,11 @@ public class World {
 			
 			int cameraIsByYPositionAmendment = (Utils.positionToPoint(FirstPersonCameraController.position.y)<0) ? 0 : Utils.positionToPoint(FirstPersonCameraController.position.y);
 						
-			if (!Utils.visiblePoint(point.Point3Dto2D(), mainLoop, (int) (35-cameraIsByYPositionAmendment))) {
+			if (!Utils.visiblePoint(point.Point3Dto2D(), mainLoop, (int) (60-cameraIsByYPositionAmendment))) {
 				continue;
 			}
 			
-			if (!Utils.visiblePoint(point.Point3Dto2D(), mainLoop, (int) (90+90-35+cameraIsByYPositionAmendment))) {
+			if (!Utils.visiblePoint(point.Point3Dto2D(), mainLoop, (int) (90+90-60+cameraIsByYPositionAmendment))) {
 				continue;
 			}
 			
@@ -249,11 +249,11 @@ public class World {
 		
 			int cameraIsByYPositionAmendment = (Utils.positionToPoint(FirstPersonCameraController.position.y)<0) ? 0 : Utils.positionToPoint(FirstPersonCameraController.position.y);
 			
-			if (!Utils.visiblePoint(monster.Point3Dto2D(), mainLoop, (int) (35-cameraIsByYPositionAmendment))) {
+			if (!Utils.visiblePoint(monster.Point3Dto2D(), mainLoop, (int) (60-cameraIsByYPositionAmendment))) {
 				continue;
 			}
 			
-			if (!Utils.visiblePoint(monster.Point3Dto2D(), mainLoop, (int) (90+90-35+cameraIsByYPositionAmendment))) {
+			if (!Utils.visiblePoint(monster.Point3Dto2D(), mainLoop, (int) (90+90-60+cameraIsByYPositionAmendment))) {
 				continue;
 			}
 			
@@ -328,11 +328,11 @@ public class World {
 		
 			int cameraIsByYPositionAmendment = (Utils.positionToPoint(FirstPersonCameraController.position.y)<0) ? 0 : Utils.positionToPoint(FirstPersonCameraController.position.y);
 			
-			if (!Utils.visiblePoint(palm.Point3Dto2D(), mainLoop, (int) (35-cameraIsByYPositionAmendment))) {
+			if (!Utils.visiblePoint(palm.Point3Dto2D(), mainLoop, (int) (60-cameraIsByYPositionAmendment))) {
 				continue;
 			}
 			
-			if (!Utils.visiblePoint(palm.Point3Dto2D(), mainLoop, (int) (90+90-35+cameraIsByYPositionAmendment))) {
+			if (!Utils.visiblePoint(palm.Point3Dto2D(), mainLoop, (int) (90+90-60+cameraIsByYPositionAmendment))) {
 				continue;
 			}
 			
@@ -363,11 +363,11 @@ public class World {
 		
 			int cameraIsByYPositionAmendment = (Utils.positionToPoint(FirstPersonCameraController.position.y)<0) ? 0 : Utils.positionToPoint(FirstPersonCameraController.position.y);
 			
-			if (!Utils.visiblePoint(bush.Point3Dto2D(), mainLoop, (int) (35-cameraIsByYPositionAmendment))) {
+			if (!Utils.visiblePoint(bush.Point3Dto2D(), mainLoop, (int) (60-cameraIsByYPositionAmendment))) {
 				continue;
 			}
 			
-			if (!Utils.visiblePoint(bush.Point3Dto2D(), mainLoop, (int) (90+90-35+cameraIsByYPositionAmendment))) {
+			if (!Utils.visiblePoint(bush.Point3Dto2D(), mainLoop, (int) (90+90-60+cameraIsByYPositionAmendment))) {
 				continue;
 			}
 			
@@ -398,11 +398,11 @@ public class World {
 		
 			int cameraIsByYPositionAmendment = (Utils.positionToPoint(FirstPersonCameraController.position.y)<0) ? 0 : Utils.positionToPoint(FirstPersonCameraController.position.y);
 			
-			if (!Utils.visiblePoint(rock.Point3Dto2D(), mainLoop, (int) (35-cameraIsByYPositionAmendment))) {
+			if (!Utils.visiblePoint(rock.Point3Dto2D(), mainLoop, (int) (60-cameraIsByYPositionAmendment))) {
 				continue;
 			}
 			
-			if (!Utils.visiblePoint(rock.Point3Dto2D(), mainLoop, (int) (90+90-35+cameraIsByYPositionAmendment))) {
+			if (!Utils.visiblePoint(rock.Point3Dto2D(), mainLoop, (int) (90+90-60+cameraIsByYPositionAmendment))) {
 				continue;
 			}
 			
@@ -433,11 +433,11 @@ public class World {
 		
 			int cameraIsByYPositionAmendment = (Utils.positionToPoint(FirstPersonCameraController.position.y)<0) ? 0 : Utils.positionToPoint(FirstPersonCameraController.position.y);
 			
-			if (!Utils.visiblePoint(flare.Point3Dto2D(), mainLoop, (int) (35-cameraIsByYPositionAmendment))) {
+			if (!Utils.visiblePoint(flare.Point3Dto2D(), mainLoop, (int) (60-cameraIsByYPositionAmendment))) {
 				continue;
 			}
 			
-			if (!Utils.visiblePoint(flare.Point3Dto2D(), mainLoop, (int) (90+90-35+cameraIsByYPositionAmendment))) {
+			if (!Utils.visiblePoint(flare.Point3Dto2D(), mainLoop, (int) (90+90-60+cameraIsByYPositionAmendment))) {
 				continue;
 			}
 			
@@ -466,11 +466,11 @@ public class World {
 		
 			int cameraIsByYPositionAmendment = (Utils.positionToPoint(FirstPersonCameraController.position.y)<0) ? 0 : Utils.positionToPoint(FirstPersonCameraController.position.y);
 			
-			if (!Utils.visiblePoint(point.Point3Dto2D(), mainLoop, (int) (25-cameraIsByYPositionAmendment))) {
+			if (!Utils.visiblePoint(point.Point3Dto2D(), mainLoop, (int) (60-cameraIsByYPositionAmendment))) {
 				continue;
 			}
 			
-			if (!Utils.visiblePoint(point.Point3Dto2D(), mainLoop, (int) (90+90-35+cameraIsByYPositionAmendment))) {
+			if (!Utils.visiblePoint(point.Point3Dto2D(), mainLoop, (int) (90+90-60+cameraIsByYPositionAmendment))) {
 				continue;
 			}
 			
@@ -499,11 +499,11 @@ public void drawBombs(MainLoopGame mainLoop) {
 		
 			int cameraIsByYPositionAmendment = (Utils.positionToPoint(FirstPersonCameraController.position.y)<0) ? 0 : Utils.positionToPoint(FirstPersonCameraController.position.y);
 			
-			if (!Utils.visiblePoint(point.Point3Dto2D(), mainLoop, (int) (25-cameraIsByYPositionAmendment))) {
+			if (!Utils.visiblePoint(point.Point3Dto2D(), mainLoop, (int) (60-cameraIsByYPositionAmendment))) {
 				continue;
 			}
 			
-			if (!Utils.visiblePoint(point.Point3Dto2D(), mainLoop, (int) (90+90-35+cameraIsByYPositionAmendment))) {
+			if (!Utils.visiblePoint(point.Point3Dto2D(), mainLoop, (int) (90+90-60+cameraIsByYPositionAmendment))) {
 				continue;
 			}
 			

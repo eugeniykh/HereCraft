@@ -54,7 +54,7 @@ public class MainLoopGame {
 	public float time = 0.0f;
 
 	public float mouseSensitivity = 0.1f;
-	public float movementSpeed = 15.0f; // move 10 units per second
+	public float movementSpeed = 25.0f; // move 10 units per second
 	
 	public KeyEventsHandler keyEventsHandler;
 	
@@ -420,14 +420,14 @@ public class MainLoopGame {
         
         if (!User.alive()) {
         	FontMineGame.drawString("You lose", (float) (Window.getWidth() * 0.45f), (float) (Window.getHeight() * 0.25f));
-        	FontMineGame.drawString("Press R to restart", (float) (Window.getWidth() * 0.40f), (float) (Window.getHeight() * 0.27f));
+        	FontMineGame.drawString("Press R to restart", (float) (Window.getWidth() * 0.43f), (float) (Window.getHeight() * 0.27f));
         }
         
         if (User.alive() && User.crateFound == User.crateFoundMax && world.horizontalGenerateTemp.contains(new Point(0, world.NOT_SEE_WORLD))) {
         	FontMineGame.drawString("You win", (float) (Window.getWidth() * 0.45f), (float) (Window.getHeight() * 0.25f));
         }
         
-        FontMineGame.drawString("You should find all boxes", 10, 375);
+        FontMineGame.drawString("You should find all boxes", 10, (int)(Window.getHeight()/2.01f));
         
         glPopMatrix();
         

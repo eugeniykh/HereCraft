@@ -218,7 +218,7 @@ public class FirstPersonCameraController
         	gravityAcceleration += 0.1;
         	position.y -= gravityAcceleration_Final * gravityAcceleration;
         } else if (position.y + gravityAcceleration_Final * gravityAcceleration < positionYVirtual * -100 || up) {
-        	gravityAcceleration += 0.3;
+        	gravityAcceleration += 0.4;
         	position.y += gravityAcceleration_Final * gravityAcceleration;
         } else {
         	gravityAcceleration = 0;

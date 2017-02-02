@@ -123,10 +123,9 @@ public class MineGame {
 	private static void init(MainLoopGame mainLoop) throws Exception {
 
 		Window.setTitle(GAME_TITLE);
-		Window.setResolution(1024, 768, false);
+		Window.setResolution(1920, 1080, true);
 		Window.setVSync(false);
 		Window.setFPS(5000);
-		//Display.setFullscreen(true);
 		Window.create();
 
 		// Start up the sound system
@@ -216,7 +215,7 @@ public class MineGame {
 		GLU.gluPerspective(60.0f, (float) Window.getWidth() / (float) Window.getHeight(), 0.2f, 50000.0f);
 		GL11.glMatrixMode(GL11.GL_MODELVIEW); // Select The Modelview Matrix
 		
-		glEnable(GL_FOG); {
+		/*glEnable(GL_FOG); {
 			FloatBuffer fogColor = BufferUtils.createFloatBuffer(4);
 			fogColor.put(0.2f).put(0.0f).put(0.0f).put(1.0f).flip();
 
@@ -226,7 +225,7 @@ public class MineGame {
 			glHint(GL_FOG_HINT, GL_DONT_CARE);
 			glFogf(GL_FOG_START, 135000.0f);
 			glFogf(GL_FOG_END, 137000.0f);
-		}
+		}*/
 	}
 	
 	private static void loadModel(MainLoopGame mainLoop, ModelOBJ modelOBJ, String src) {
